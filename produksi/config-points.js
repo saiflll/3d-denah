@@ -1,10 +1,14 @@
 
-// 1. TITIK STATIS PERMANEN (Static Base Cells - Garis Dinding Border)
+// 1. TITIK STATIS PERMANEN (Static Base Cells - Garis Dinding Border Arsitektur)
+// Rekomendasi Warna Elegan:
+// - Blueprint Cyan: "#38bdf8" (Terang & Bersih)
+// - Slate Neon Blue: "#2563eb" (Solid & Elegan)
+// - Muted Steel: "#475569" (Minimalis Arsitektural)
 const staticCells = [
-    { fromRow: 66, toRow: 66, fromCol: 1, toCol: 99, height: 3, color: "#3b82f6" },
-    { fromRow: 5, toRow: 5, fromCol: 1, toCol: 99, height: 3, color: "#3b82f6" },
-    { fromRow: 5, toRow: 66, fromCol: 1, toCol: 1, height: 3, color: "#3b82f6" },
-    { fromRow: 5, toRow: 66, fromCol: 99, toCol: 99, height: 3, color: "#3b82f6" }
+    { fromRow: 66, toRow: 66, fromCol: 1, toCol: 99, height: 2.2, color: "#38bdf8" },
+    { fromRow: 5, toRow: 5, fromCol: 1, toCol: 99, height: 2.2, color: "#38bdf8" },
+    { fromRow: 5, toRow: 66, fromCol: 1, toCol: 1, height: 2.2, color: "#38bdf8" },
+    { fromRow: 5, toRow: 66, fromCol: 99, toCol: 99, height: 2.2, color: "#38bdf8" }
 ];
 
 /* 2. PRESET TOMBOL SITE & BAR DINAMIS (Interactive Site Points)

@@ -3,7 +3,7 @@
        1. KONSTANTA & VARIABEL GRID (Grid Constants from Config)
        ============================================================ */
     const gConf = window.gridConfig || { mapWidth: 297, mapHeight: 210, cols: 90, rows: 90, flatHeight: 0.025, normalHeight: 0.75, viewPadding: 1.35 };
-    
+
     // Ukuran Full Size Denah Asli (Sesuai SVG)
     const MAP_W = gConf.mapWidth || 297;
     const MAP_D = gConf.mapHeight || 210;
@@ -76,7 +76,7 @@
         const { col, row } = indexToCell(index);
         const pos = cellTo3DPosition(col, row, height);
         dummy.position.set(pos.x, pos.y, pos.z);
-        
+
         if (height <= FLAT_H + 0.001) {
             dummy.scale.set(0, 0, 0);
         } else {
@@ -107,7 +107,7 @@
 
         const cardData = preset.card;
         const posClass = `pos-${cardData.position || 'top-left'}`;
-        
+
         infoCardElement.className = `site-info-card ${posClass}`;
         infoCardElement.style.setProperty('--card-theme-color', preset.color || '#38bdf8');
 
@@ -161,7 +161,7 @@
 
     let currentCategory = 'produksi';
 
-    window.switchCategory = function(categoryName) {
+    window.switchCategory = function (categoryName) {
         if (currentCategory === categoryName) return;
         currentCategory = categoryName;
 
@@ -174,10 +174,30 @@
             }
         });
 
-        // Reset view kamera & chart ke flat 2D
-        reset2D();
+        // 🎬 Transisi Sinematik Kamera saat ganti kategori (Slight dynamic tilt & return)
+        isFlat = true;
+        currentPresetId = null;
+        hideInfoCard();
 
-        // Render ulang marker tombol pin sesuai kategori yang dipilih
+        const startHeights = heights.slice();
+        const endHeights = new Float32Array(COUNT);
+        applyStaticAndPresetCells(endHeights, null);
+
+        const camStart = { ...cam };
+        // Gerakan kamera sedikit mengorbit lalu kembali ke posisi sempurna
+        const sweepTheta = categoryName === 'support' ? (cam.theta + 0.35) : (cam.theta - 0.35);
+        const camEnd = {
+            theta: sweepTheta,
+            phi: 0.01,
+            radius: calculateFitRadius(),
+            targetX: 0,
+            targetY: 0,
+            targetZ: 0
+        };
+
+        transition(camStart, camEnd, startHeights, endHeights, 600, true);
+
+        // Render ulang marker tombol pin dengan animasi pop-in berurutan
         createSiteMarkers();
     };
 
@@ -192,12 +212,14 @@
             return itemClass === currentCategory.toLowerCase();
         });
 
-        filteredPresets.forEach(preset => {
+        filteredPresets.forEach((preset, index) => {
             const btn = document.createElement('button');
             btn.className = 'btn-marker-card';
             btn.id = `btn-${preset.id}`;
             btn.style.setProperty('--active-color', preset.color || '#38bdf8');
-            
+            // Stagger delay kemunculan pin
+            btn.style.animationDelay = `${index * 45}ms`;
+
             btn.innerHTML = `
                 <div class="marker-dot-wrapper">
                     <span class="marker-pulse"></span>
@@ -519,7 +541,7 @@
         const spanW = (maxC - minC + 1) * CELL_W;
         const spanD = (maxR - minR + 1) * CELL_D;
         const maxSpan = Math.max(spanW, spanD, maxH * 2);
-        
+
         // Jarak kamera proporsional terhadap ukuran area blok chart
         const autoRadius = Math.max(50, Math.min(260, maxSpan * 1.5 + 40));
 
@@ -721,6 +743,36 @@
     window.zoomOut = zoomOut;
     window.fitView = fitView;
     window.focusCurrentTarget = focusCurrentTarget;
+
+    /* ============================================================
+       11. LOGIKA KEAMANAN AKSES (Passcode PIN Verification)
+       ============================================================ */
+    // Default PIN: "2026" atau ganti sesuai keinginan Anda
+    const ACCESS_PIN = "ck32026";
+
+    window.verifyPin = function () {
+        const input = document.getElementById('pin-input');
+        const error = document.getElementById('lock-error-msg');
+        const lockScreen = document.getElementById('auth-lock-screen');
+
+        if (input && input.value.trim() === ACCESS_PIN) {
+            sessionStorage.setItem('cp3_auth_unlocked', 'true');
+            lockScreen.classList.add('unlocked');
+            if (error) error.classList.remove('show');
+        } else {
+            if (error) error.classList.add('show');
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+        }
+    };
+
+    // Auto-unlock jika dalam satu sesi browser sudah pernah memasukkan PIN
+    if (sessionStorage.getItem('cp3_auth_unlocked') === 'true') {
+        const lockScreen = document.getElementById('auth-lock-screen');
+        if (lockScreen) lockScreen.classList.add('unlocked');
+    }
 
     init();
 })();

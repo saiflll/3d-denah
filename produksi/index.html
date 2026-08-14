@@ -10,7 +10,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
-</head>
+
+<body>
+
+    <!-- LOCK SCREEN MINIMALIS ANALYST / BACKEND (Terminal Minimalist Auth) -->
+    <div id="auth-lock-screen" class="lock-screen-overlay">
+        <div class="lock-card">
+            <div class="pin-display-group">
+                <span class="lock-dot"></span>
+                <span class="pin-prompt">&gt;</span>
+                <input type="password" id="pin-input" maxlength="8" placeholder="ENTER ACCESS KEY" autocomplete="off"
+                    autofocus onkeydown="if(event.key==='Enter') verifyPin()">
+                <button class="pin-submit-btn" title="Submit" onclick="verifyPin()">
+                    <i data-lucide="corner-down-left"></i>
+                </button>
+            </div>
+            <div id="lock-error-msg" class="lock-error">ACCESS DENIED &bull; INVALID KEY</div>
+        </div>
+    </div>
 
     <!-- TAB KATEGORI ATAS (Top Category Tabs: Produksi & Support Produksi) -->
     <div id="category-tab-panel" class="panel-category-tabs">
