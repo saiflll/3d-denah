@@ -11,8 +11,9 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #07111b;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #060b13;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* ============================================================
@@ -34,24 +35,24 @@ html, body {
 }
 
 /* ============================================================
-   PANEL TAB KATEGORI ATAS (Top Category Tabs)
+   PANEL TAB KATEGORI ATAS (Top Category Tabs - Minimalist Glass)
    ============================================================ */
 #category-tab-panel, .panel-category-tabs {
     position: absolute;
-    top: 20px;
+    top: 24px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 150;
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(15, 23, 42, 0.88);
-    padding: 6px 8px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15);
+    gap: 4px;
+    background: rgba(10, 18, 30, 0.75);
+    padding: 5px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     pointer-events: auto;
 }
 
@@ -59,34 +60,36 @@ html, body {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 18px;
-    border-radius: 20px;
-    border: none;
+    padding: 7px 20px;
+    border-radius: 30px;
+    border: 1px solid transparent;
     background: transparent;
-    color: #94a3b8;
+    color: #64748b;
     font-size: 13px;
     font-weight: 600;
+    letter-spacing: 0.2px;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     user-select: none;
 }
 
 .cat-tab-btn svg {
-    width: 16px;
-    height: 16px;
-    stroke-width: 2;
-    transition: transform 0.2s;
+    width: 15px;
+    height: 15px;
+    stroke-width: 2.2;
+    transition: transform 0.3s ease;
 }
 
 .cat-tab-btn:hover {
-    color: #f8fafc;
-    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .cat-tab-btn.active {
     color: #ffffff;
-    background: linear-gradient(135deg, #0284c7, #38bdf8);
-    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.85), rgba(2, 132, 199, 0.95));
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .cat-tab-btn.active svg {
@@ -107,36 +110,37 @@ html, body {
     overflow: hidden;
 }
 
-/* KARTU PIN LANDSCAPE (Compact Landscape Card Pin) */
+/* KARTU PIN LANDSCAPE (Modern Minimalist Pill Card Pin) */
 .btn-marker-card {
     position: absolute;
     transform: translate(-50%, -50%);
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(15, 23, 42, 0.85);
-    padding: 5px 12px 5px 8px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    gap: 7px;
+    background: rgba(10, 18, 30, 0.82);
+    padding: 5px 14px 5px 9px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     cursor: pointer;
     pointer-events: auto;
     z-index: 101;
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     user-select: none;
 }
 
 .btn-marker-card:hover {
-    transform: translate(-50%, -50%) scale(1.08);
-    border-color: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    transform: translate(-50%, -50%) scale(1.1);
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(15, 25, 42, 0.92);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.65), 0 0 12px var(--active-color, rgba(56, 189, 248, 0.2));
     z-index: 105;
 }
 
 .btn-marker-card:active {
-    transform: translate(-50%, -50%) scale(0.96);
+    transform: translate(-50%, -50%) scale(0.95);
 }
 
 /* Indikator Titik Animasi Heartbeat (Left Status Dot with Heartbeat) */
@@ -237,20 +241,19 @@ html, body {
 .site-info-card {
     position: absolute;
     z-index: 120;
-    background: rgba(15, 23, 42, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-top: 3px solid var(--card-theme-color, #38bdf8);
-    border-radius: 14px;
-    padding: 16px 18px;
+    background: rgba(10, 18, 30, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 18px 20px;
     color: #e2e8f0;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), 0 0 20px rgba(0, 0, 0, 0.3);
-    min-width: 280px;
-    max-width: 340px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 25px var(--card-theme-color, rgba(56, 189, 248, 0.15));
+    min-width: 290px;
+    max-width: 350px;
     pointer-events: auto;
     opacity: 0;
-    transform: translateY(12px) scale(0.96);
+    transform: translateY(14px) scale(0.95);
     transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -283,9 +286,9 @@ html, body {
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-bottom: 10px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding-bottom: 12px;
 }
 
 .card-title-group {
@@ -294,82 +297,92 @@ html, body {
 }
 
 .card-title {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     color: #ffffff;
-    letter-spacing: 0.2px;
+    letter-spacing: -0.2px;
 }
 
 .card-subtitle {
-    font-size: 11px;
-    color: #94a3b8;
-    margin-top: 2px;
+    font-size: 11.5px;
+    color: #64748b;
+    margin-top: 3px;
+    font-weight: 500;
 }
 
 .card-close-btn {
-    background: transparent;
-    border: none;
-    color: #64748b;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #94a3b8;
     cursor: pointer;
-    padding: 2px;
-    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-close-btn:hover {
-    color: #f8fafc;
-    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+    transform: scale(1.08);
 }
 
 /* Grid Metrik & Angka Statistik */
 .card-metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .metric-item {
-    background: rgba(30, 41, 59, 0.7);
+    background: rgba(20, 32, 48, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
-    padding: 8px 10px;
+    border-radius: 10px;
+    padding: 9px 12px;
     display: flex;
     flex-direction: column;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.metric-item:hover {
+    background: rgba(25, 40, 60, 0.85);
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
 .metric-label {
-    font-size: 10px;
-    color: #94a3b8;
-    font-weight: 500;
+    font-size: 9.5px;
+    color: #64748b;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
 }
 
 .metric-value {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--metric-color, #38bdf8);
-    margin-top: 3px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin-top: 4px;
+    letter-spacing: -0.3px;
 }
 
 /* Info Keterangan Bawah */
 .card-info-text {
-    font-size: 11.5px;
-    line-height: 1.45;
-    color: #cbd5e1;
-    background: rgba(15, 23, 42, 0.4);
-    padding: 8px 10px;
-    border-radius: 6px;
-    border-left: 2px solid var(--card-theme-color, #38bdf8);
+    font-size: 12px;
+    line-height: 1.5;
+    color: #94a3b8;
+    background: rgba(10, 18, 30, 0.6);
+    padding: 10px 12px;
+    border-radius: 10px;
+    border-left: 3px solid var(--card-theme-color, #38bdf8);
 }
 
 /* ============================================================
-   TOOLBAR: KONTROL KAMERA (Bottom Navigation Panel / Panel Navigasi)
+   TOOLBAR: KONTROL KAMERA (Minimalist Floating Pill)
    ============================================================ */
 #cam-ctrl-panel, .panel-nav-ctrl {
     position: absolute;
@@ -378,41 +391,41 @@ html, body {
     z-index: 100;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    background: rgba(15, 23, 42, 0.8);
-    padding: 6px;
-    border-radius: 12px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    gap: 4px;
+    background: rgba(10, 18, 30, 0.78);
+    padding: 5px;
+    border-radius: 14px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     pointer-events: auto;
 }
 
 .ctrl-btn {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     background: transparent;
     border: none;
-    border-radius: 8px;
-    color: #94a3b8;
+    border-radius: 9px;
+    color: #64748b;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ctrl-btn svg {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2;
+    width: 17px;
+    height: 17px;
+    stroke-width: 2.2;
 }
 
 .ctrl-btn:hover {
-    background: rgba(56, 189, 248, 0.2);
+    background: rgba(56, 189, 248, 0.15);
     color: #38bdf8;
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .ctrl-btn:active {
@@ -421,6 +434,6 @@ html, body {
 
 .ctrl-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.08);
     margin: 2px 4px;
 }
