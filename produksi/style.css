@@ -11,9 +11,10 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #060b13;
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #020611;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
+    color: #e2e8f0;
 }
 
 /* ============================================================
@@ -44,7 +45,7 @@ html, body {
     width: 100vw;
     height: 100vh;
     z-index: 1000;
-    background: #060b13;
+    background: #020611;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -73,10 +74,10 @@ html, body {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     font-weight: 600;
-    color: #64748b;
+    color: #475569;
     letter-spacing: 1.5px;
 }
 
@@ -84,29 +85,30 @@ html, body {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 8px #10b981;
+    background: #00f0ff;
+    box-shadow: 0 0 10px #00f0ff;
 }
 
 .pin-display-group {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(3, 10, 24, 0.85);
+    border: 1px solid rgba(0, 240, 255, 0.15);
     border-radius: 10px;
     padding: 8px 10px 8px 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition: border-color 0.25s, box-shadow 0.25s;
 }
 
 .pin-display-group:focus-within {
-    border-color: rgba(56, 189, 248, 0.4);
-    background: rgba(15, 23, 42, 0.9);
+    border-color: #00f0ff;
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.3), inset 0 1px 0 rgba(0, 240, 255, 0.1);
 }
 
 .pin-prompt {
-    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
-    color: #38bdf8;
+    font-family: 'JetBrains Mono', monospace;
+    color: #00f0ff;
     font-size: 14px;
     font-weight: 700;
     user-select: none;
@@ -118,24 +120,24 @@ html, body {
     outline: none;
     color: #f8fafc;
     font-size: 13px;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     width: 100%;
-    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 #pin-input::placeholder {
     letter-spacing: 1px;
     font-size: 10px;
-    color: #475569;
+    color: #334155;
 }
 
 .pin-submit-btn {
     width: 30px;
     height: 30px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.2);
     border-radius: 6px;
-    color: #94a3b8;
+    color: #00f0ff;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -149,15 +151,15 @@ html, body {
 }
 
 .pin-submit-btn:hover {
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.15);
-    border-color: rgba(56, 189, 248, 0.3);
+    color: #ffffff;
+    background: #00f0ff;
+    box-shadow: 0 0 12px #00f0ff;
 }
 
 .lock-error {
-    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    color: #ef4444;
+    color: #f43f5e;
     letter-spacing: 1px;
     display: none;
 }
@@ -174,65 +176,76 @@ html, body {
 }
 
 /* ============================================================
-   PANEL TAB KATEGORI ATAS (Top Category Tabs - Minimalist Glass)
+   PANEL TAB KATEGORI KIRI BAWAH (Compact Vertical Stacked HUD)
    ============================================================ */
 #category-tab-panel, .panel-category-tabs {
     position: absolute;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 24px;
+    left: 24px;
     z-index: 150;
     display: flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(10, 18, 30, 0.75);
-    padding: 5px;
-    border-radius: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    flex-direction: column;
+    gap: 3px;
+    background: rgba(2, 8, 20, 0.90);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 240, 255, 0.22);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 240, 255, 0.1);
     pointer-events: auto;
+    font-family: 'JetBrains Mono', monospace;
+    min-width: 105px;
+}
+
+.cat-divider-line {
+    height: 1px;
+    background: rgba(0, 240, 255, 0.12);
+    margin: 1px 4px;
 }
 
 .cat-tab-btn {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 7px 20px;
-    border-radius: 30px;
+    justify-content: flex-start;
+    gap: 7px;
+    padding: 6px 10px;
+    border-radius: 5px;
     border: 1px solid transparent;
     background: transparent;
-    color: #64748b;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
+    color: #475569;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     user-select: none;
+    width: 100%;
 }
 
-.cat-tab-btn svg {
-    width: 15px;
-    height: 15px;
-    stroke-width: 2.2;
-    transition: transform 0.3s ease;
+.cat-tab-btn .cat-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #334155;
+    transition: all 0.2s ease;
 }
 
 .cat-tab-btn:hover {
-    color: #cbd5e1;
+    color: #94a3b8;
     background: rgba(255, 255, 255, 0.04);
 }
 
 .cat-tab-btn.active {
     color: #ffffff;
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.85), rgba(2, 132, 199, 0.95));
-    border-color: rgba(56, 189, 248, 0.4);
-    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    background: rgba(0, 240, 255, 0.14);
+    border-color: rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
 }
 
-.cat-tab-btn.active svg {
-    transform: scale(1.1);
+.cat-tab-btn.active .cat-dot {
+    background: #00f0ff;
+    box-shadow: 0 0 8px #00f0ff;
 }
 
 /* ============================================================
@@ -249,22 +262,23 @@ html, body {
     overflow: hidden;
 }
 
-/* KARTU PIN LANDSCAPE (Modern Minimalist Pill Card Pin) */
+/* KARTU PIN LANDSCAPE (Neon Cyber Glow Card Pin) */
 .btn-marker-card {
     position: absolute;
     transform: translate(-50%, -50%);
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    background: rgba(10, 18, 30, 0.85);
-    padding: 5px 14px 5px 9px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    background: rgba(2, 8, 20, 0.90);
+    padding: 6px 14px 6px 9px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     cursor: pointer;
-    pointer-events: auto;
+    pointer-events: auto !important;
+    touch-action: manipulation;
     z-index: 101;
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     user-select: none;
@@ -283,11 +297,11 @@ html, body {
 }
 
 .btn-marker-card:hover {
-    transform: translate(-50%, -50%) scale(1.08);
-    border-color: rgba(255, 255, 255, 0.28);
-    background: rgba(15, 25, 42, 0.95);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-    z-index: 105;
+    transform: translate(-50%, -50%) scale(1.1);
+    border-color: var(--active-color, #00f0ff);
+    background: rgba(4, 14, 32, 0.98);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8), 0 0 14px var(--active-color, rgba(0, 240, 255, 0.35));
+    z-index: 115;
 }
 
 .btn-marker-card:active {
@@ -297,28 +311,28 @@ html, body {
 /* Indikator Titik Animasi Heartbeat (Left Status Dot with Heartbeat) */
 .marker-dot-wrapper {
     position: relative;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .marker-dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background-color: #64748b; /* Abu-abu default */
+    background-color: var(--active-color, #00f0ff);
+    box-shadow: 0 0 6px var(--active-color, #00f0ff);
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Gelombang Heartbeat */
 .marker-pulse {
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background-color: #64748b;
+    background-color: var(--active-color, #00f0ff);
     opacity: 0.6;
     animation: heartbeat 2.2s infinite ease-out;
 }
@@ -329,56 +343,31 @@ html, body {
         opacity: 0.7;
     }
     50% {
-        transform: scale(2.4);
+        transform: scale(2.6);
         opacity: 0;
     }
     100% {
-        transform: scale(2.4);
+        transform: scale(2.6);
         opacity: 0;
     }
 }
 
-/* Tulisan Teks Pin (Marker Card Label) */
 .marker-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    color: #e2e8f0;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #cbd5e1;
     white-space: nowrap;
     text-transform: uppercase;
 }
 
-/* STATUS AKTIF / TERPILIH (Active State on Click - Clean Minimalist) */
+/* STATUS AKTIF / TERPILIH (Active State on Click) */
 .btn-marker-card.active {
-    border-color: var(--active-color, #38bdf8);
-    background: rgba(15, 23, 42, 0.95);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: var(--active-color, #00f0ff);
+    background: rgba(3, 12, 28, 0.98);
+    box-shadow: 0 0 16px var(--active-color, rgba(0, 240, 255, 0.35)), 0 4px 20px rgba(0, 0, 0, 0.8);
     transform: translate(-50%, -50%) scale(1.08);
     z-index: 110;
-}
-
-.btn-marker-card.active .marker-dot {
-    background-color: var(--active-color, #38bdf8);
-}
-
-.btn-marker-card.active .marker-pulse {
-    background-color: var(--active-color, #38bdf8);
-    animation: heartbeat-active 1.4s infinite ease-out;
-}
-
-@keyframes heartbeat-active {
-    0% {
-        transform: scale(1);
-        opacity: 0.85;
-    }
-    60% {
-        transform: scale(3.2);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(3.2);
-        opacity: 0;
-    }
 }
 
 .btn-marker-card.active .marker-label {
@@ -387,33 +376,37 @@ html, body {
 }
 
 /* ============================================================
-   KARTU INFORMASI / STATISTIK DETAIL (Clean Frosted Glass)
+   KARTU INFORMASI / STATISTIK DETAIL (Executive Cyber HUD Glass Card)
    ============================================================ */
 .site-info-card {
     position: absolute;
     z-index: 120;
-    background: rgba(13, 22, 35, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(3, 12, 28, 0.96), rgba(1, 6, 16, 0.98));
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 12px;
     padding: 16px 18px;
-    color: #e2e8f0;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    min-width: 280px;
-    max-width: 340px;
-    pointer-events: auto;
+    color: #f1f5f9;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 240, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    min-width: 290px;
+    max-width: 350px;
+    pointer-events: none;
+    visibility: hidden;
     opacity: 0;
-    transform: translateY(10px) scale(0.96);
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(12px) scale(0.95);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    font-family: 'Space Grotesk', sans-serif;
 }
 
 .site-info-card.visible {
+    pointer-events: auto;
+    visibility: visible;
     opacity: 1;
     transform: translateY(0) scale(1);
 }
 
-/* Posisi Kartu */
+/* 4 Pilihan Posisi Lokasi Kartu di Layar */
 .site-info-card.pos-top-left {
     top: 24px;
     left: 24px;
@@ -423,7 +416,7 @@ html, body {
     right: 24px;
 }
 .site-info-card.pos-bottom-left {
-    bottom: 24px;
+    bottom: 95px;
     left: 24px;
 }
 .site-info-card.pos-bottom-right {
@@ -437,9 +430,9 @@ html, body {
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+    padding-bottom: 10px;
 }
 
 .card-title-group {
@@ -448,27 +441,33 @@ html, body {
 }
 
 .card-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: #ffffff;
-    letter-spacing: -0.2px;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .card-subtitle {
-    font-size: 11.5px;
-    color: #64748b;
-    margin-top: 3px;
-    font-weight: 500;
+    font-size: 10.5px;
+    color: #00f0ff;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .card-close-btn {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: #94a3b8;
     cursor: pointer;
-    width: 26px;
-    height: 26px;
-    border-radius: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -477,63 +476,65 @@ html, body {
 
 .card-close-btn:hover {
     color: #ffffff;
-    background: rgba(239, 68, 68, 0.2);
-    border-color: rgba(239, 68, 68, 0.4);
-    transform: scale(1.08);
+    background: rgba(244, 63, 94, 0.3);
+    border-color: rgba(244, 63, 94, 0.6);
+    transform: scale(1.1);
 }
 
 /* Grid Metrik & Angka Statistik */
 .card-metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: 6px;
+    margin-bottom: 12px;
 }
 
 .metric-item {
-    background: rgba(20, 32, 48, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    padding: 9px 12px;
+    background: rgba(2, 6, 17, 0.85);
+    border: 1px solid rgba(0, 240, 255, 0.12);
+    border-radius: 8px;
+    padding: 8px 10px;
     display: flex;
     flex-direction: column;
-    transition: background 0.2s, border-color 0.2s;
+    transition: all 0.2s ease;
 }
 
 .metric-item:hover {
-    background: rgba(25, 40, 60, 0.85);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(4, 14, 34, 0.95);
+    border-color: rgba(0, 240, 255, 0.35);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
 }
 
 .metric-label {
-    font-size: 9.5px;
+    font-size: 8.5px;
     color: #64748b;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
 }
 
 .metric-value {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
-    color: var(--metric-color, #38bdf8);
-    margin-top: 4px;
-    letter-spacing: -0.3px;
+    color: var(--metric-color, #00f0ff);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 3px;
 }
 
 /* Info Keterangan Bawah */
 .card-info-text {
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1.5;
     color: #94a3b8;
-    background: rgba(10, 18, 30, 0.6);
-    padding: 10px 12px;
-    border-radius: 10px;
-    border-left: 3px solid var(--card-theme-color, #38bdf8);
+    background: rgba(2, 6, 17, 0.7);
+    padding: 8px 10px;
+    border-radius: 6px;
+    border-left: 2px solid var(--card-theme-color, #00f0ff);
 }
 
 /* ============================================================
-   TOOLBAR: KONTROL KAMERA (Minimalist Floating Pill)
+   TOOLBAR: KONTROL KAMERA (Cyber Floating Controls)
    ============================================================ */
 #cam-ctrl-panel, .panel-nav-ctrl {
     position: absolute;
@@ -543,13 +544,13 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    background: rgba(10, 18, 30, 0.78);
+    background: rgba(2, 8, 20, 0.85);
     padding: 5px;
     border-radius: 14px;
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
     pointer-events: auto;
 }
 
@@ -568,14 +569,14 @@ html, body {
 }
 
 .ctrl-btn svg {
-    width: 17px;
-    height: 17px;
+    width: 16px;
+    height: 16px;
     stroke-width: 2.2;
 }
 
 .ctrl-btn:hover {
-    background: rgba(56, 189, 248, 0.15);
-    color: #38bdf8;
+    background: rgba(0, 240, 255, 0.15);
+    color: #00f0ff;
     transform: scale(1.08);
 }
 
@@ -585,6 +586,6 @@ html, body {
 
 .ctrl-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(0, 240, 255, 0.12);
     margin: 2px 4px;
 }

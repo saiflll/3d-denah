@@ -12,6 +12,6 @@ const gridConfig = {
     // 3. PENGATURAN ELEVASI & KAMERA
     flatHeight: 0.025,
     normalHeight: 0.75,
-    viewPadding: 0.8
+    viewPadding: 0.65
 };
 window.gridConfig = gridConfig;

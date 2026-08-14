@@ -75,14 +75,13 @@
     function setInstance(index, height) {
         const { col, row } = indexToCell(index);
         const pos = cellTo3DPosition(col, row, height);
-        dummy.position.set(pos.x, pos.y, pos.z);
 
+        dummy.position.set(pos.x, pos.y, pos.z);
         if (height <= FLAT_H + 0.001) {
             dummy.scale.set(0, 0, 0);
         } else {
             dummy.scale.set(CELL_W * gapFactor, height, CELL_D * gapFactor);
         }
-
         dummy.rotation.set(0, 0, 0);
         dummy.updateMatrix();
         cells.setMatrixAt(index, dummy.matrix);
@@ -236,7 +235,7 @@
 
             const col = (preset.pin?.col || 45) - 1;
             const row = (preset.pin?.row || 45) - 1;
-            markerElements.push({ element: btn, pos3D: cellTo3DPosition(col, row, 1), presetId: preset.id });
+            markerElements.push({ element: btn, pos3D: cellTo3DPosition(col, row, 0.2), presetId: preset.id });
         });
 
         updateMarkerPositions();
@@ -264,7 +263,7 @@
                 item.element.style.display = 'none';
                 return;
             }
-            item.element.style.display = 'flex';
+            item.element.style.display = 'inline-flex';
             item.element.style.left = `${(vector.x * 0.5 + 0.5) * w}px`;
             item.element.style.top = `${(-(vector.y * 0.5) + 0.5) * h}px`;
         });
@@ -291,14 +290,22 @@
         const hl = theme.hemiLight || { sky: 0xaeeaff, ground: 0x07111b, intensity: 0.85 };
         scene.add(new THREE.HemisphereLight(hl.sky, hl.ground, hl.intensity));
 
-        const dl = theme.dirLight || { color: 0xffffff, intensity: 0.9, pos: [50, 100, 40] };
+        const dl = theme.dirLight || { color: 0xffffff, intensity: 1.1, pos: [60, 120, 50] };
         const dir = new THREE.DirectionalLight(dl.color, dl.intensity);
         dir.position.set(...dl.pos);
         dir.castShadow = true;
         dir.shadow.mapSize.set(2048, 2048);
+        dir.shadow.camera.near = 0.5;
+        dir.shadow.camera.far = 400;
+        dir.shadow.camera.left = -MAP_W / 1.5;
+        dir.shadow.camera.right = MAP_W / 1.5;
+        dir.shadow.camera.top = MAP_D / 1.5;
+        dir.shadow.camera.bottom = -MAP_D / 1.5;
+        dir.shadow.bias = -0.0005;
+        dir.shadow.radius = 3.5; // Soft cinematic shadow blur
         scene.add(dir);
 
-        // 1. LAYER DASAR: Lantai Background Gambar Peta SVG Sesuai Skala & Offset Kalibrasi
+        // 1. LAYER DASAR: Lantai Background Gambar Peta SVG yang Menerima Bayangan Realistis (Shadow Receiver Floor)
         const textureLoader = new THREE.TextureLoader();
         const mapTexture = textureLoader.load(theme.bgTexture || 'drawing-1.svg');
         mapTexture.generateMipmaps = true;
@@ -311,15 +318,17 @@
 
         floor = new THREE.Mesh(
             new THREE.PlaneGeometry(bgW, bgD),
-            new THREE.MeshBasicMaterial({
+            new THREE.MeshStandardMaterial({
                 map: mapTexture,
                 transparent: true,
-                opacity: 0.95
+                opacity: 0.98,
+                roughness: 0.8,
+                metalness: 0.05
             })
         );
         floor.rotation.x = -Math.PI / 2;
         floor.position.set(offX, 0.0, offZ);
-        floor.receiveShadow = false;
+        floor.receiveShadow = true; // Menerima jatuhan bayangan balok 3D
         scene.add(floor);
 
         // 2. LAYER TENGAH: Garis Grid Outline Tipis (0.5px subtle blueprint)
@@ -334,14 +343,53 @@
             scene.add(gridHelper);
         }
 
-        // Instanced Mesh Cells (Hanya bar yang naik yang berwujud solid)
+        // Instanced Mesh Cells dengan Material Bersih & Glossy Halus (Clean Architectural Solid Finish)
+        const cellMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.22,
+            metalness: 0.15
+        });
+
+        // Highlight Halus Pada Sisi Atas Balok
+        cellMaterial.onBeforeCompile = (shader) => {
+            shader.vertexShader = `
+                varying vec3 vWorldPosition;
+                varying vec3 vModelPosition;
+                ${shader.vertexShader}
+            `.replace(
+                '#include <begin_vertex>',
+                `
+                #include <begin_vertex>
+                vModelPosition = position;
+                vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
+                `
+            );
+
+            shader.fragmentShader = `
+                varying vec3 vModelPosition;
+                varying vec3 vWorldPosition;
+                ${shader.fragmentShader}
+            `.replace(
+                '#include <dithering_fragment>',
+                `
+                #include <dithering_fragment>
+                // Bayangan lembut tipis di dasar
+                float bottomShadow = smoothstep(-0.5, 0.45, vModelPosition.y);
+                bottomShadow = mix(0.55, 1.0, bottomShadow);
+                gl_FragColor.rgb *= bottomShadow;
+
+                // Kilau halus di sisi atas
+                if (vModelPosition.y > 0.46) {
+                    gl_FragColor.rgb += vec3(0.12, 0.15, 0.18);
+                }
+                `
+            );
+        };
+
+        // Instanced Mesh Cells Utama (Solid Bars)
         cells = new THREE.InstancedMesh(
             new THREE.BoxGeometry(1, 1, 1),
-            new THREE.MeshStandardMaterial({
-                color: 0xffffff,
-                roughness: theme.cellRoughness || 0.5,
-                metalness: theme.cellMetalness || 0.03
-            }),
+            cellMaterial,
             COUNT
         );
         cells.castShadow = true;
@@ -468,7 +516,9 @@
     function applyStaticAndPresetCells(targetArray, activePreset) {
         // 1. Set dasar semua ke flat (outline only)
         targetArray.fill(FLAT_H);
-        for (let i = 0; i < COUNT; i++) cells.setColorAt(i, baseColor);
+        for (let i = 0; i < COUNT; i++) {
+            cells.setColorAt(i, baseColor);
+        }
 
         // 2. Terapkan Titik Statis Permanen
         const staticList = window.staticCells || [];
@@ -477,7 +527,10 @@
                 const idx = (r - 1) * COLS + (c - 1);
                 if (idx >= 0 && idx < COUNT) {
                     targetArray[idx] = h || 1;
-                    if (color) cells.setColorAt(idx, new THREE.Color(color));
+                    if (color) {
+                        const colObj = new THREE.Color(color);
+                        cells.setColorAt(idx, colObj);
+                    }
                 }
             });
         });
@@ -489,7 +542,10 @@
                     const idx = (r - 1) * COLS + (c - 1);
                     if (idx >= 0 && idx < COUNT) {
                         targetArray[idx] = h || 10;
-                        if (color) cells.setColorAt(idx, new THREE.Color(color));
+                        if (color) {
+                            const colObj = new THREE.Color(color);
+                            cells.setColorAt(idx, colObj);
+                        }
                     }
                 });
             });

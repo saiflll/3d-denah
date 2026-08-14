@@ -1,14 +1,11 @@
 
-// 1. TITIK STATIS PERMANEN (Static Base Cells - Garis Dinding Border Arsitektur)
-// Rekomendasi Warna Elegan:
-// - Blueprint Cyan: "#38bdf8" (Terang & Bersih)
-// - Slate Neon Blue: "#2563eb" (Solid & Elegan)
-// - Muted Steel: "#475569" (Minimalis Arsitektural)
+// 1. TITIK STATIS PERMANEN (Garis Dinding Perimeter Luar - Muted Slate Steel)
+// Dibuat tenang & rendah agar tidak mencolok dan fokus mata tetap ke area/chart produksi
 const staticCells = [
-    { fromRow: 66, toRow: 66, fromCol: 1, toCol: 99, height: 2.2, color: "#38bdf8" },
-    { fromRow: 5, toRow: 5, fromCol: 1, toCol: 99, height: 2.2, color: "#38bdf8" },
-    { fromRow: 5, toRow: 66, fromCol: 1, toCol: 1, height: 2.2, color: "#38bdf8" },
-    { fromRow: 5, toRow: 66, fromCol: 99, toCol: 99, height: 2.2, color: "#38bdf8" }
+    { fromRow: 66, toRow: 66, fromCol: 1, toCol: 99, height: 3.2, color: "#334155" },
+    { fromRow: 5, toRow: 5, fromCol: 1, toCol: 99, height: 3.2, color: "#334155" },
+    { fromRow: 5, toRow: 66, fromCol: 1, toCol: 1, height: 3.2, color: "#334155" },
+    { fromRow: 5, toRow: 66, fromCol: 99, toCol: 99, height: 3.2, color: "#334155" }
 ];
 
 /* 2. PRESET TOMBOL SITE & BAR DINAMIS (Interactive Site Points)
@@ -37,10 +34,11 @@ const sitePoints = [
             ],
             info: "Area cold storage untuk produk siap kirim ke logistik."
         },
+        // Ruangan Penyimpanan Lebar (Ruangan Cold Storage: height 6, Loading Dock: height 4, Anteroom: height 5)
         cells: [
-            { fromRow: 8, toRow: 63, fromCol: 6, toCol: 18, height: 8, color: "#0284c7" },    // Deep Sky Blue
-            { fromRow: 18, toRow: 35, fromCol: 17, toCol: 18, height: 5, color: "#38bdf8" },  // Vibrant Cyan
-            { fromRow: 45, toRow: 50, fromCol: 17, toCol: 18, height: 5, color: "#7dd3fc" }   // Light Cyan
+            { fromRow: 8, toRow: 63, fromCol: 6, toCol: 18, height: 6, color: "#0284c7" },    // Deep Sky Blue - Ruangan Utama
+            { fromRow: 18, toRow: 35, fromCol: 17, toCol: 18, height: 4, color: "#38bdf8" },  // Vibrant Cyan - Loading Bay
+            { fromRow: 45, toRow: 50, fromCol: 17, toCol: 18, height: 5, color: "#7dd3fc" }   // Light Cyan - Staging Area
         ]
     },
     {
@@ -60,24 +58,25 @@ const sitePoints = [
             ],
             info: "Gudang suku cadang dan material support lini produksi."
         },
+        // Mesin & Rak Modular Berbeda Fungsi (Rak Orange: Suku Cadang Kritis / Mesin, Rak Hijau: Material Aisle)
         cells: [
-            { fromRow: 14, toRow: 14, fromCol: 21, toCol: 22, height: 5, color: "#f97316" }, // Bright Orange
-            { fromRow: 14, toRow: 14, fromCol: 24, toCol: 25, height: 5, color: "#10b981" }, // Emerald Green
-            { fromRow: 20, toRow: 20, fromCol: 21, toCol: 22, height: 5, color: "#f97316" },
+            { fromRow: 14, toRow: 14, fromCol: 21, toCol: 22, height: 8, color: "#f97316" }, // Bright Orange - Rak Mesin Kritis
+            { fromRow: 14, toRow: 14, fromCol: 24, toCol: 25, height: 5, color: "#10b981" }, // Emerald Green - Rak Standar
+            { fromRow: 20, toRow: 20, fromCol: 21, toCol: 22, height: 8, color: "#f97316" },
             { fromRow: 20, toRow: 20, fromCol: 24, toCol: 25, height: 5, color: "#10b981" },
-            { fromRow: 25, toRow: 25, fromCol: 21, toCol: 22, height: 5, color: "#f97316" },
+            { fromRow: 25, toRow: 25, fromCol: 21, toCol: 22, height: 8, color: "#f97316" },
             { fromRow: 25, toRow: 25, fromCol: 24, toCol: 25, height: 5, color: "#10b981" },
-            { fromRow: 31, toRow: 31, fromCol: 21, toCol: 22, height: 5, color: "#f97316" },
+            { fromRow: 31, toRow: 31, fromCol: 21, toCol: 22, height: 8, color: "#f97316" },
             { fromRow: 31, toRow: 31, fromCol: 24, toCol: 25, height: 5, color: "#10b981" },
-            { fromRow: 38, toRow: 38, fromCol: 21, toCol: 22, height: 5, color: "#f97316" },
+            { fromRow: 38, toRow: 38, fromCol: 21, toCol: 22, height: 8, color: "#f97316" },
             { fromRow: 38, toRow: 38, fromCol: 24, toCol: 25, height: 5, color: "#10b981" },
-            { fromRow: 43, toRow: 43, fromCol: 21, toCol: 22, height: 5, color: "#f97316" },
+            { fromRow: 43, toRow: 43, fromCol: 21, toCol: 22, height: 8, color: "#f97316" },
             { fromRow: 43, toRow: 43, fromCol: 24, toCol: 25, height: 5, color: "#10b981" },
-            { fromRow: 48, toRow: 48, fromCol: 21, toCol: 22, height: 5, color: "#f97316" },
+            { fromRow: 48, toRow: 48, fromCol: 21, toCol: 22, height: 8, color: "#f97316" },
             { fromRow: 48, toRow: 48, fromCol: 24, toCol: 25, height: 5, color: "#10b981" },
-            { fromRow: 53, toRow: 53, fromCol: 21, toCol: 22, height: 5, color: "#f97316" },
+            { fromRow: 53, toRow: 53, fromCol: 21, toCol: 22, height: 8, color: "#f97316" },
             { fromRow: 53, toRow: 53, fromCol: 24, toCol: 25, height: 5, color: "#10b981" },
-            { fromRow: 58, toRow: 58, fromCol: 21, toCol: 22, height: 5, color: "#f97316" },
+            { fromRow: 58, toRow: 58, fromCol: 21, toCol: 22, height: 8, color: "#f97316" },
             { fromRow: 58, toRow: 58, fromCol: 24, toCol: 25, height: 5, color: "#10b981" }
         ]
     },
@@ -98,16 +97,17 @@ const sitePoints = [
             ],
             info: "Tunnel pembekuan instan untuk mempertahankan kualitas dan tekstur produk."
         },
+        // Mesin Tunnel IQF & Ruang Pembekuan (Warna & Ketinggian Sesuai Modul Mesin & Ruang Suhu Rendah)
         cells: [
-            { fromRow: 58, toRow: 61, fromCol: 28, toCol: 39, height: 8, color: "#0891b2" }, // Freezing Cyan
-            { fromRow: 53, toRow: 56, fromCol: 28, toCol: 39, height: 8, color: "#06b6d4" },
-            { fromRow: 47, toRow: 51, fromCol: 28, toCol: 34, height: 8, color: "#22d3ee" },
-            { fromRow: 19, toRow: 22, fromCol: 32, toCol: 41, height: 8, color: "#0e7490" },
-            { fromRow: 13, toRow: 17, fromCol: 32, toCol: 40, height: 8, color: "#0891b2" },
-            { fromRow: 24, toRow: 28, fromCol: 28, toCol: 34, height: 8, color: "#06b6d4" },
-            { fromRow: 30, toRow: 34, fromCol: 28, toCol: 39, height: 8, color: "#22d3ee" },
-            { fromRow: 36, toRow: 40, fromCol: 28, toCol: 39, height: 8, color: "#0891b2" },
-            { fromRow: 42, toRow: 45, fromCol: 28, toCol: 34, height: 8, color: "#0e7490" }
+            { fromRow: 58, toRow: 61, fromCol: 28, toCol: 39, height: 9, color: "#0891b2" }, // Mesin IQF Tunnel 1
+            { fromRow: 53, toRow: 56, fromCol: 28, toCol: 39, height: 9, color: "#06b6d4" }, // Mesin IQF Tunnel 2
+            { fromRow: 47, toRow: 51, fromCol: 28, toCol: 34, height: 6, color: "#22d3ee" }, // Pre-Cooling Chamber
+            { fromRow: 19, toRow: 22, fromCol: 32, toCol: 41, height: 9, color: "#0e7490" }, // Blast Freezer Unit
+            { fromRow: 13, toRow: 17, fromCol: 32, toCol: 40, height: 6, color: "#0891b2" }, // Infeed Air-lock
+            { fromRow: 24, toRow: 28, fromCol: 28, toCol: 34, height: 6, color: "#06b6d4" },
+            { fromRow: 30, toRow: 34, fromCol: 28, toCol: 39, height: 9, color: "#22d3ee" },
+            { fromRow: 36, toRow: 40, fromCol: 28, toCol: 39, height: 9, color: "#0891b2" },
+            { fromRow: 42, toRow: 45, fromCol: 28, toCol: 34, height: 6, color: "#0e7490" }
         ]
     },
     {
@@ -126,9 +126,10 @@ const sitePoints = [
             ],
             info: "Area preparasi dan penimbangan komposisi sebelum proses pencampuran."
         },
+        // Meja & Mesin Penimbangan Preparasi (Stasiun Mesin Pendek: height 8)
         cells: [
-            { fromRow: 14, toRow: 14, fromCol: 27, toCol: 30, height: 8, color: "#f43f5e" }, // Rose Red
-            { fromRow: 20, toRow: 20, fromCol: 27, toCol: 30, height: 8, color: "#fb7185" }  // Light Rose
+            { fromRow: 14, toRow: 14, fromCol: 27, toCol: 30, height: 8, color: "#f43f5e" }, // Mesin Preparasi A (Rose Red)
+            { fromRow: 20, toRow: 20, fromCol: 27, toCol: 30, height: 8, color: "#fb7185" }  // Mesin Preparasi B (Light Rose)
         ]
     },
     {
@@ -147,9 +148,10 @@ const sitePoints = [
             ],
             info: "Lini continuous processing dan cooking untuk varian produk UK."
         },
+        // Conveyor Memanjang Membawa Produk (Conveyor: height 6, Mesin Processor: height 9)
         cells: [
-            { fromRow: 14, toRow: 14, fromCol: 45, toCol: 64, height: 8, color: "#7c3aed" }, // Deep Violet
-            { fromRow: 14, toRow: 14, fromCol: 50, toCol: 64, height: 8, color: "#a78bfa" }  // Soft Violet
+            { fromRow: 14, toRow: 14, fromCol: 45, toCol: 64, height: 6, color: "#7c3aed" }, // Deep Violet - Conveyor Jalur Utama
+            { fromRow: 14, toRow: 14, fromCol: 50, toCol: 64, height: 9, color: "#a78bfa" }  // Soft Violet - Mesin Processing Unit
         ]
     },
     {
@@ -168,9 +170,10 @@ const sitePoints = [
             ],
             info: "Lini otomatis pengolahan dan pencetakan adonan DM."
         },
+        // Conveyor Jalur Utama & Mesin Cetak DM
         cells: [
-            { fromRow: 20, toRow: 20, fromCol: 50, toCol: 65, height: 8, color: "#9333ea" },
-            { fromRow: 20, toRow: 20, fromCol: 42, toCol: 49, height: 8, color: "#c084fc" }
+            { fromRow: 20, toRow: 20, fromCol: 50, toCol: 65, height: 9, color: "#9333ea" }, // Mesin Cetak Utama (Deep Purple)
+            { fromRow: 20, toRow: 20, fromCol: 42, toCol: 49, height: 6, color: "#c084fc" }  // Conveyor Transfer Infeed (Light Purple)
         ]
     },
     {
@@ -189,8 +192,9 @@ const sitePoints = [
             ],
             info: "Lini produksi conveyor berkecepatan tinggi varian AN."
         },
+        // Conveyor Panjang AN Line
         cells: [
-            { fromRow: 25, toRow: 25, fromCol: 35, toCol: 64, height: 8, color: "#c026d3" }
+            { fromRow: 25, toRow: 25, fromCol: 35, toCol: 64, height: 6, color: "#c026d3" } // Conveyor Memanjang
         ]
     },
     {
@@ -210,9 +214,10 @@ const sitePoints = [
             ],
             info: "Proses steaming, pemotongan, dan pengeringan mie instan/basah."
         },
+        // Ruangan Steaming & Mesin Potong/Goreng Mie
         cells: [
-            { fromRow: 51, toRow: 60, fromCol: 59, toCol: 66, height: 7, color: "#ca8a04" }, // Rich Gold
-            { fromRow: 50, toRow: 60, fromCol: 62, toCol: 66, height: 10, color: "#facc15" } // Bright Yellow
+            { fromRow: 51, toRow: 60, fromCol: 59, toCol: 66, height: 6, color: "#ca8a04" }, // Ruangan / Steamer Chamber (Gold)
+            { fromRow: 50, toRow: 60, fromCol: 62, toCol: 66, height: 10, color: "#facc15" } // Mesin Fryer & Cutter Ketinggian Mesin (Bright Yellow)
         ]
     },
     {
@@ -231,8 +236,9 @@ const sitePoints = [
             ],
             info: "Pencampuran bumbu dan formula cair secara presisi dan higienis."
         },
+        // Ruangan Mixing & Tangki Mixer Industri
         cells: [
-            { fromRow: 9, toRow: 22, fromCol: 70, toCol: 80, height: 8, color: "#0d9488" }   // Deep Teal
+            { fromRow: 9, toRow: 22, fromCol: 70, toCol: 80, height: 8, color: "#0d9488" }   // Ruangan Batch Mixing Tertutup
         ]
     },
     {
@@ -251,8 +257,9 @@ const sitePoints = [
             ],
             info: "Ruang pendingin intermediate untuk bahan setengah jadi."
         },
+        // Ruangan Chilled Box Insulasi
         cells: [
-            { fromRow: 23, toRow: 35, fromCol: 70, toCol: 80, height: 8, color: "#2563eb" }  // Chilled Royal Blue
+            { fromRow: 23, toRow: 35, fromCol: 70, toCol: 80, height: 6, color: "#2563eb" }  // Ruangan Cold Room
         ]
     },
     {
@@ -271,8 +278,9 @@ const sitePoints = [
             ],
             info: "Area proses termal terkontrol untuk pematangan dan inkubasi."
         },
+        // Ruangan Hot Chamber Termal
         cells: [
-            { fromRow: 36, toRow: 42, fromCol: 70, toCol: 80, height: 8, color: "#dc2626" }   // Deep Hot Red
+            { fromRow: 36, toRow: 42, fromCol: 70, toCol: 80, height: 6, color: "#dc2626" }   // Ruang Pemanas / Oven
         ]
     },
     {
@@ -292,8 +300,9 @@ const sitePoints = [
             ],
             info: "Penerimaan, penyimpanan, dan inspeksi awal seluruh bahan baku."
         },
+        // Ruangan Gudang Bahan Baku Lebar
         cells: [
-            { fromRow: 8, toRow: 63, fromCol: 84, toCol: 94, height: 8, color: "#ea580c" },  // Burnt Amber
+            { fromRow: 8, toRow: 63, fromCol: 84, toCol: 94, height: 6, color: "#ea580c" }   // Gudang Raw Material
         ]
     },
 

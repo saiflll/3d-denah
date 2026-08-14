@@ -7,7 +7,7 @@
     <title>3D Grid Map - Interactive</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
 
@@ -29,15 +29,16 @@
         </div>
     </div>
 
-    <!-- TAB KATEGORI ATAS (Top Category Tabs: Produksi & Support Produksi) -->
-    <div id="category-tab-panel" class="panel-category-tabs">
+    <!-- TAB KATEGORI KIRI BAWAH (Compact Vertical Stacked HUD) -->
+    <div id="category-tab-panel" class="panel-category-tabs vertical-stack">
         <button class="cat-tab-btn active" data-category="produksi" onclick="switchCategory('produksi')">
-            <i data-lucide="factory"></i>
-            <span>Produksi</span>
+            <span class="cat-dot"></span>
+            <span class="cat-name">PRODUKSI</span>
         </button>
+        <div class="cat-divider-line"></div>
         <button class="cat-tab-btn" data-category="support" onclick="switchCategory('support')">
-            <i data-lucide="wrench"></i>
-            <span>Support Produksi</span>
+            <span class="cat-dot"></span>
+            <span class="cat-name">SUPPORT</span>
         </button>
     </div>
 
