@@ -8,14 +8,14 @@ const mapTheme = {
     floorColor: 0xffffff,
     bgTexture: 'drawing-1.svg', // Gambar peta latar (SVG)
 
-    // Pengaturan Garis Grid Wireframe (true = tampilkan garis outline, false = sembunyikan/0px)
-    showGridLines: false,
+    // Pengaturan Garis Grid Wireframe (Tipis 0.5px Subtle Blueprint Grid)
+    showGridLines: true,
     gridPrimary: 0x1e5a78,
-    gridSecondary: 0x143c52,
+    gridSecondary: 0x113347,
+    gridOpacity: 0.45,
 
-    // Warna Blok Sel Dasar (Base Cell Color)
-    // Jarak Gap Antar Balok Sel (1.0 = Rapat Tanpa Gap / Solid Menyatu, 0.90 = Ada Celah Kotak)
-    cellGapFactor: 1.0,
+    // Jarak Gap Antar Balok Sel (0.94 = Gap Sangat Tipis / Hairline Seam, tetap jelas terlihat batas per sel)
+    cellGapFactor: 0.94,
 
     // Material Sel Blok (Cell Material Properties)
     cellRoughness: 0.5,

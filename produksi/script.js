@@ -300,11 +300,15 @@
         floor.receiveShadow = false;
         scene.add(floor);
 
-        // 2. LAYER TENGAH: Garis Grid Outline Transparan (Bisa di-toggle via theme.showGridLines)
+        // 2. LAYER TENGAH: Garis Grid Outline Tipis (0.5px subtle blueprint)
         if (theme.showGridLines !== false) {
-            const gridHelper = new THREE.GridHelper(Math.max(MAP_W, MAP_D), Math.max(COLS, ROWS), theme.gridPrimary || 0x1e5a78, theme.gridSecondary || 0x143c52);
+            const gridHelper = new THREE.GridHelper(Math.max(MAP_W, MAP_D), Math.max(COLS, ROWS), theme.gridPrimary || 0x1e5a78, theme.gridSecondary || 0x113347);
             gridHelper.scale.set(MAP_W / Math.max(MAP_W, MAP_D), 1, MAP_D / Math.max(MAP_W, MAP_D));
             gridHelper.position.y = 0.005;
+            if (gridHelper.material) {
+                gridHelper.material.transparent = true;
+                gridHelper.material.opacity = theme.gridOpacity !== undefined ? theme.gridOpacity : 0.45;
+            }
             scene.add(gridHelper);
         }
 
