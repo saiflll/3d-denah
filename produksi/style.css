@@ -1,0 +1,426 @@
+/* ============================================================
+   RESET DASAR & LATAR (Base Setup & Body Canvas)
+   ============================================================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #07111b;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ============================================================
+   LAYER 1: KANVAS PETA 3D (3D Map Canvas / Latar Belakang)
+   ============================================================ */
+#map, .layer-map-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    z-index: 20;
+    cursor: grab;
+}
+
+#map:active {
+    cursor: grabbing;
+}
+
+/* ============================================================
+   PANEL TAB KATEGORI ATAS (Top Category Tabs)
+   ============================================================ */
+#category-tab-panel, .panel-category-tabs {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 150;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.88);
+    padding: 6px 8px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15);
+    pointer-events: auto;
+}
+
+.cat-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+}
+
+.cat-tab-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+    transition: transform 0.2s;
+}
+
+.cat-tab-btn:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.cat-tab-btn.active {
+    color: #ffffff;
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+}
+
+.cat-tab-btn.active svg {
+    transform: scale(1.1);
+}
+
+/* ============================================================
+   LAYER 2: OVERLAY TOMBOL PIN & KARTU INFO (UI Marker & Info Card Overlay)
+   ============================================================ */
+#ui-overlay, .layer-btn-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* KARTU PIN LANDSCAPE (Compact Landscape Card Pin) */
+.btn-marker-card {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.85);
+    padding: 5px 12px 5px 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 101;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    user-select: none;
+}
+
+.btn-marker-card:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    z-index: 105;
+}
+
+.btn-marker-card:active {
+    transform: translate(-50%, -50%) scale(0.96);
+}
+
+/* Indikator Titik Animasi Heartbeat (Left Status Dot with Heartbeat) */
+.marker-dot-wrapper {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #64748b; /* Abu-abu default */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Gelombang Heartbeat */
+.marker-pulse {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #64748b;
+    opacity: 0.6;
+    animation: heartbeat 2.2s infinite ease-out;
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+}
+
+/* Tulisan Teks Pin (Marker Card Label) */
+.marker-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #e2e8f0;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+/* STATUS AKTIF / TERPILIH (Active State on Click) */
+.btn-marker-card.active {
+    border-color: var(--active-color, #38bdf8);
+    background: rgba(15, 23, 42, 0.95);
+    box-shadow: 0 0 16px var(--active-color, rgba(56, 189, 248, 0.4)), 0 4px 15px rgba(0, 0, 0, 0.6);
+    transform: translate(-50%, -50%) scale(1.1);
+    z-index: 110;
+}
+
+.btn-marker-card.active .marker-dot {
+    background-color: var(--active-color, #38bdf8);
+}
+
+.btn-marker-card.active .marker-pulse {
+    background-color: var(--active-color, #38bdf8);
+    animation: heartbeat-active 1.4s infinite ease-out;
+}
+
+@keyframes heartbeat-active {
+    0% {
+        transform: scale(1);
+        opacity: 0.85;
+    }
+    60% {
+        transform: scale(3.2);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(3.2);
+        opacity: 0;
+    }
+}
+
+.btn-marker-card.active .marker-label {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* ============================================================
+   KARTU INFORMASI / STATISTIK DETAIL (Layer 2 Dynamic Info Card)
+   ============================================================ */
+.site-info-card {
+    position: absolute;
+    z-index: 120;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 3px solid var(--card-theme-color, #38bdf8);
+    border-radius: 14px;
+    padding: 16px 18px;
+    color: #e2e8f0;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), 0 0 20px rgba(0, 0, 0, 0.3);
+    min-width: 280px;
+    max-width: 340px;
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-info-card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Posisi Kartu */
+.site-info-card.pos-top-left {
+    top: 24px;
+    left: 24px;
+}
+.site-info-card.pos-top-right {
+    top: 24px;
+    right: 24px;
+}
+.site-info-card.pos-bottom-left {
+    bottom: 24px;
+    left: 24px;
+}
+.site-info-card.pos-bottom-right {
+    bottom: 80px;
+    right: 24px;
+}
+
+/* Bagian Header Kartu */
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 10px;
+}
+
+.card-title-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.2px;
+}
+
+.card-subtitle {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.card-close-btn {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.card-close-btn:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Grid Metrik & Angka Statistik */
+.card-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.metric-item {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-label {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.metric-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--metric-color, #38bdf8);
+    margin-top: 3px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Info Keterangan Bawah */
+.card-info-text {
+    font-size: 11.5px;
+    line-height: 1.45;
+    color: #cbd5e1;
+    background: rgba(15, 23, 42, 0.4);
+    padding: 8px 10px;
+    border-radius: 6px;
+    border-left: 2px solid var(--card-theme-color, #38bdf8);
+}
+
+/* ============================================================
+   TOOLBAR: KONTROL KAMERA (Bottom Navigation Panel / Panel Navigasi)
+   ============================================================ */
+#cam-ctrl-panel, .panel-nav-ctrl {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.8);
+    padding: 6px;
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+}
+
+.ctrl-btn {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #94a3b8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.ctrl-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+}
+
+.ctrl-btn:hover {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    transform: scale(1.05);
+}
+
+.ctrl-btn:active {
+    transform: scale(0.92);
+}
+
+.ctrl-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 2px 4px;
+}

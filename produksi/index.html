@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Grid Map - Interactive</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+    <!-- TAB KATEGORI ATAS (Top Category Tabs: Produksi & Support Produksi) -->
+    <div id="category-tab-panel" class="panel-category-tabs">
+        <button class="cat-tab-btn active" data-category="produksi" onclick="switchCategory('produksi')">
+            <i data-lucide="factory"></i>
+            <span>Produksi</span>
+        </button>
+        <button class="cat-tab-btn" data-category="support" onclick="switchCategory('support')">
+            <i data-lucide="wrench"></i>
+            <span>Support Produksi</span>
+        </button>
+    </div>
+
+    <!-- LAYER 2 -->
+    <div id="ui-overlay" class="layer-btn-overlay"></div>
+
+    <!-- TOOLBAR -->
+    <div id="cam-ctrl-panel" class="panel-nav-ctrl">
+        <button class="ctrl-btn" title="Perbesar (Zoom In)" onclick="zoomIn()">
+            <i data-lucide="zoom-in"></i>
+        </button>
+        <button class="ctrl-btn" title="Perkecil (Zoom Out)" onclick="zoomOut()">
+            <i data-lucide="zoom-out"></i>
+        </button>
+        <div class="ctrl-divider"></div>
+        <button class="ctrl-btn" title="Pas Layar (Fit View)" onclick="fitView()">
+            <i data-lucide="maximize-2"></i>
+        </button>
+        <button class="ctrl-btn" title="Pusatkan Fokus (Focus Target)" onclick="focusCurrentTarget()">
+            <i data-lucide="crosshair"></i>
+        </button>
+    </div>
+
+    <!-- LAYER 1 -->
+    <div id="map" class="layer-map-canvas"></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="config-grid.js"></script>
+    <script src="config-points.js"></script>
+    <script src="theme-styles.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
