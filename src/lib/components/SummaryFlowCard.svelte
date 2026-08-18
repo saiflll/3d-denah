@@ -239,7 +239,7 @@
             impact: [
                 {
                     div: "Cost/Finance",
-                    text: "Rasio Tepung + Air per batch vs output mie terhitung aktual — waste formula bisa diaudit per shift tanpa rekap manual.",
+                    text: "Rasio Tepung + Air per batc vs output mie terhitung aktual — waste formula bisa diaudit per shift tanpa rekap manual.",
                 },
                 {
                     div: "Plant/OEE",
