@@ -1,10 +1,19 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { X } from "lucide-svelte";
+    import {
+        X,
+        CheckCircle,
+        AlertTriangle,
+        Clock,
+        Mail,
+        MessageSquare,
+        ShieldAlert,
+        Cpu,
+    } from "lucide-svelte";
 
     const dispatch = createEventDispatcher();
     let activeStepIndex = 0;
-    let activeView = "flow"; // "flow" | "summary"
+    let activeView = "flow"; // "flow" | "summary" | "handover"
 
     const steps = [
         {
@@ -13,6 +22,10 @@
             title: "WHRM (Gudang Bahan Baku)",
             subtitle: "Inbound / Outbound & Pencatatan Tonase",
             color: "#f97316",
+            statusTag: "TRIAL KE-2 (PITSTOP)",
+            statusColor: "#f59e0b",
+            statusNote:
+                "Sudah masuk tahap trial ke-2 & kemarin sempat diuji coba pada event Pitstop.",
             desc: "Pencatatan inbound & outbound bahan baku dari gudang WHRM berdasarkan work order produksi. Smart Scale RS232 menangkap bobot otomatis, suhu gudang dipantau dan dibandingkan dengan PLC existing.",
             comparison: {
                 plc: "Monitoring Suhu (PLC existing gudang)",
@@ -44,6 +57,10 @@
             title: "Industrial Mixing Room",
             subtitle: "Penerimaan Bahan, Color Tag & Komparasi Susut",
             color: "#14b8a6",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
             desc: "Pencampuran adonan dengan komparasi material: membandingkan pengeluaran WHRM vs permintaan Mixing vs penerimaan aktual untuk mendeteksi susut/kehilangan bahan saat transfer. Cart ditandai Color Tag (cat food-grade) sebagai ID untuk AI Vision.",
             comparison: {
                 plc: "Sniffing PLC Mixer (Durasi Aduk per batch)",
@@ -75,6 +92,10 @@
             title: "Chilled Storage Room",
             subtitle: "Buffer Simpan Cart & Display Matrix Gate",
             color: "#3b82f6",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
             desc: "Area simpan sementara cart adonan (terisi & kosong steril) sebelum didistribusikan ke lini. AI Vision Camera hitung cart in/out otomatis, ESP32 pantau suhu komparasi PLC chiller. Display Matrix di gate memberi arahan lini tujuan distribusi.",
             comparison: {
                 plc: "PLC Chiller Compressors (Set Point suhu)",
@@ -106,6 +127,10 @@
             title: "Thermal / Hot Room",
             subtitle: "Inkubasi Adonan Acin & Telemetri Heater",
             color: "#ef4444",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
             desc: "Ruang inkubasi suhu tinggi (~45°C) khusus adonan Acin sebelum masuk AN Line. Smart Weighing RS232 catat bahan In/Out, PZEM pantau konsumsi listrik heater aktual dibandingkan dengan PLC.",
             comparison: {
                 plc: "PLC Heater Control (Set Point & Durasi Inkubasi)",
@@ -137,6 +162,10 @@
             title: "AN Processing Line (Acin)",
             subtitle: "Timbang Manual + RS232 Auto-Capture",
             color: "#d946ef",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
             desc: "Lini Acin dengan pemasakan kering tanpa minyak. Operator timbang fisik seperti biasa, data hasil timbangan ditangkap otomatis via RS232 — tidak ada perubahan alur kerja operator.",
             comparison: {
                 plc: "PLC Acin Line (Speed / Heater Duration)",
@@ -168,6 +197,10 @@
             title: "UK Processing Line",
             subtitle: "Forming → Frying → Checking + PZEM & Proximity",
             color: "#8b5cf6",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
             desc: "Lini continuous UK: Adonan + Keju + Minyak dari Forming → Frying → Checking. Proximity sensor food-grade cacah output tiap tahap (pcs/min), PZEM pantau kWh, dibandingkan dengan data PLC Forming & PLC Frying.",
             comparison: {
                 plc: "PLC Forming & PLC Frying (Speed & Suhu Fryer)",
@@ -199,6 +232,10 @@
             title: "Dimsum Processing Line",
             subtitle: "Forming → Checking (tanpa Frying) + PZEM & Proximity",
             color: "#a855f7",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
             desc: "Lini continuous Dimsum: Adonan Luar + Adonan Isian dari Forming → Checking (tanpa frying/minyak). Proximity sensor cacah output, PZEM pantau kWh, dibandingkan dengan data PLC Forming.",
             comparison: {
                 plc: "PLC Forming Dimsum (Speed)",
@@ -230,7 +267,11 @@
             title: "Noodle Processing Line",
             subtitle: "PLC Sniffing — Tepung, Air, Running Hours & Mode Log",
             color: "#eab308",
-            desc: "Lini mie berbasis PLC Sniffing real-time. Saat ini alur hilir mie belum sepenuhnya terkonfirmasi, namun diasumsikan melewati jalur yang sama. Parameter: jam running mesin, tepung (kg), air (Liter/m³), serta log mode operasi Auto vs Manual lengkap dengan timestamp.",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
+            desc: "Lini mie berbasis PLC Sniffing real-time. Parameter: jam running mesin, tepung (kg), air (Liter/m³), serta log mode operasi Auto vs Manual lengkap dengan timestamp.",
             comparison: {
                 plc: "Sniffing PLC Mie Line (Running Hours, Tepung kg, Air Liter/m³)",
                 iot: "Log Action & Mode Tracking (Auto/Manual Mode + Timestamp Intervensi)",
@@ -239,7 +280,7 @@
             impact: [
                 {
                     div: "Cost/Finance",
-                    text: "Rasio Tepung + Air per batc vs output mie terhitung aktual — waste formula bisa diaudit per shift tanpa rekap manual.",
+                    text: "Rasio Tepung + Air per batch vs output mie terhitung aktual — waste formula bisa diaudit per shift tanpa rekap manual.",
                 },
                 {
                     div: "Plant/OEE",
@@ -247,11 +288,11 @@
                 },
                 {
                     div: "QC/SOP",
-                    text: "Log Auto vs Manual Mode memberi visibilitas ke QC dan Supervisor kalau ada penyimpangan SOP operasional — siapa, kapan, berapa lama.",
+                    text: "Log Auto vs Manual Mode memberi visibilitas ke QC dan Supervisor kalau ada penyimpangan SOP operasional.",
                 },
                 {
                     div: "Management",
-                    text: "Data ini terekam tanpa perubahan prosedur operator — pure sniffing, investasi sensor minimal, nilai data maksimal.",
+                    text: "Data ini terekam tanpa perubahan prosedur operator — pure sniffing, investasi sensor minimal.",
                 },
             ],
         },
@@ -261,6 +302,10 @@
             title: "IQF Tunnel Freezer",
             subtitle: "Pembekuan Cepat — Pre-Packing Center",
             color: "#06b6d4",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
             desc: "Pembekuan cepat produk sebelum masuk stasiun PC. Proximity In/Out ukur jumlah produk dan dwell time, PZEM ukur kWh aktual, dikomparasi dengan data PLC tunnel.",
             comparison: {
                 plc: "PLC Tunnel Temp & Speed (Set Point suhu)",
@@ -274,7 +319,7 @@
                 },
                 {
                     div: "QC/Food Safety",
-                    text: "Dwell time & suhu terekam otomatis per batch — bukti compliance pembekuan sesuai standar, siap audit kapan saja.",
+                    text: "Dwell time & suhu terekam otomatis per batch — bukti compliance pembekuan sesuai standar.",
                 },
                 {
                     div: "Plant/Maintenance",
@@ -282,7 +327,7 @@
                 },
                 {
                     div: "Traceability",
-                    text: "Proximity In vs Out verifikasi tidak ada produk tertinggal di tunnel — menutup gap hitungan output lini ke input PC.",
+                    text: "Proximity In vs Out verifikasi tidak ada produk tertinggal di tunnel.",
                 },
             ],
         },
@@ -292,7 +337,11 @@
             title: "Packing Center (PC)",
             subtitle: "Timbang Akhir & Cetak Primary QR Code",
             color: "#ec4899",
-            desc: "Stasiun timbang produk terbeku. Setiap unit ditimbang via Digital Scale RS232, lalu dicetak Primary QR Code sebagai identitas unik produk — titik origin seluruh hierarki traceability sistem.",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
+            desc: "Stasiun timbang produk terbeku. Setiap unit ditimbang via Digital Scale RS232, lalu dicetak Primary QR Code sebagai identitas unik produk.",
             comparison: {
                 plc: "PLC Conveyor Feed",
                 iot: "Digital Scale RS232 (Auto Weight Capture) + Engine Printer QR Primary",
@@ -301,19 +350,19 @@
             impact: [
                 {
                     div: "QC/Traceability",
-                    text: "Origin identitas produk. Setiap Primary QR adalah referensi balik untuk recall, audit mutu, dan klaim kualitas ke depannya.",
+                    text: "Origin identitas produk. Setiap Primary QR adalah referensi balik untuk recall & audit mutu.",
                 },
                 {
                     div: "Cost/Finance",
-                    text: "Timbang akhir akurat cegah over-fill (giveaway cost terakumulasi) dan under-fill (risiko komplain & denda regulator).",
+                    text: "Timbang akhir akurat cegah over-fill (giveaway cost) dan under-fill.",
                 },
                 {
                     div: "Legal/Audit",
-                    text: "Data QR Primary adalah fondasi laporan traceability ke BPOM, audit klien, atau retailer — kualitas data di sini menentukan keandalan seluruh laporan batch.",
+                    text: "Data QR Primary adalah fondasi laporan traceability ke BPOM atau retailer.",
                 },
                 {
                     div: "Operator",
-                    text: "Cetak QR otomatis dari hasil timbang, menghilangkan input label manual, mempercepat throughput PC.",
+                    text: "Cetak QR otomatis dari hasil timbang mempercepat throughput PC.",
                 },
             ],
         },
@@ -323,7 +372,11 @@
             title: "QC MDCW (Metal Detector & Check Weigher)",
             subtitle: "Passive Modbus RS485 Sniffing + Auto Reject",
             color: "#6366f1",
-            desc: "Sniffing pasif data Metal Detector & Dynamic Check Weigher via Modbus RTU RS485 — non-intrusive, tidak mengganggu sistem komunikasi mesin. Produk kontaminasi logam atau berat off-spec otomatis di-reject oleh rejector pneumatik.",
+            statusTag: "IMPLEMENTED (ON-HOLD)",
+            statusColor: "#ef4444",
+            statusNote:
+                "Sudah diimplementasikan di lapangan, namun saat ini ON-HOLD karena terkendala dedicated server lokal (kalkulasi & koneksi lebih stabil di lokal daripada full cloud) serta keterbatasan bahan & tenaga pre-resetting.",
+            desc: "Sniffing pasif data Metal Detector & Dynamic Check Weigher via Modbus RTU RS485 — non-intrusive. Produk kontaminasi logam atau berat off-spec otomatis di-reject oleh rejector pneumatik.",
             comparison: {
                 plc: "Passive RS485 Sniffer (baca frame komunikasi Controller–HMI, non-intrusive)",
                 iot: "Sniffer Node IoT (hanya baca, tidak menulis ke sistem mesin)",
@@ -332,19 +385,19 @@
             impact: [
                 {
                     div: "QC/Food Safety",
-                    text: "Filter kontaminasi logam 100% otomatis per unit, bukan sampling. Setiap produk keluar lini sudah terverifikasi — bukti compliance audit food safety.",
+                    text: "Filter kontaminasi logam 100% otomatis per unit, bukan sampling.",
                 },
                 {
                     div: "Cost/Finance",
-                    text: "Reject rate per shift/batch terekam otomatis — cost of quality dihitung per lini & batch, bukan hanya total bulanan yang ambigu.",
+                    text: "Reject rate per shift/batch terekam otomatis — cost of quality dihitung per lini & batch.",
                 },
                 {
                     div: "Management",
-                    text: "Data reject otomatis vs laporan manual dibandingkan — gap antara kondisi aktual mesin dan laporan lapangan langsung terlihat.",
+                    text: "Data reject otomatis vs laporan manual dibandingkan untuk deteksi gap.",
                 },
                 {
                     div: "Legal/Reputasi",
-                    text: "Rekaman kontaminasi yang terdeteksi + timestamp = bukti defensif kalau ada klaim kontaminasi dari pasar.",
+                    text: "Rekaman kontaminasi yang terdeteksi + timestamp = bukti defensif klaim kontaminasi.",
                 },
             ],
         },
@@ -354,7 +407,11 @@
             title: "Secondary Packing (SP)",
             subtitle: "Karton Master & Barcode Secondary",
             color: "#a855f7",
-            desc: "Produk yang lolos MDCW dibungkus ke karton master dan ditempeli Label Barcode Secondary — menghubungkan hierarki Primary QR ke level karton/dus untuk traceability end-to-end.",
+            statusTag: "IMPLEMENTED (ON-HOLD)",
+            statusColor: "#ef4444",
+            statusNote:
+                "Sudah diimplementasikan di lapangan, namun saat ini ON-HOLD karena terkendala server dedicated lokal (perhitungan lokal lebih cepat & stabil), serta keterbatasan tenaga & bahan pre-resetting.",
+            desc: "Produk yang lolos MDCW dibungkus ke karton master dan ditempeli Label Barcode Secondary — menghubungkan hierarki Primary QR ke level karton/dus.",
             comparison: {
                 plc: "Data Mini PC Mesin Existing (SP Line)",
                 iot: "Sniffing Printer Barcode Secondary Packing",
@@ -363,19 +420,19 @@
             impact: [
                 {
                     div: "QC/Traceability",
-                    text: "Primary QR → Secondary Barcode = rantai traceability sampai level dus. Recall per karton spesifik bisa dilakukan tanpa bongkar seluruh batch.",
+                    text: "Primary QR → Secondary Barcode = rantai traceability sampai level dus.",
                 },
                 {
                     div: "Warehouse/Logistics",
-                    text: "Jumlah karton terverifikasi sebelum masuk WHFG — selisih stok diminimalkan di titik ini, bukan ditemukan saat stock opname.",
+                    text: "Jumlah karton terverifikasi sebelum masuk WHFG.",
                 },
                 {
                     div: "Cost/Finance",
-                    text: "Output SP vs reject MDCW = loss bahan aktual per lini & shift, bukan rata-rata divisi yang tidak actionable.",
+                    text: "Output SP vs reject MDCW = loss bahan aktual per lini & shift.",
                 },
                 {
                     div: "Customer/Sales",
-                    text: "Barcode karton terhubung ke Primary QR memperkuat posisi negosiasi dengan buyer yang mensyaratkan traceability produk.",
+                    text: "Barcode karton terhubung ke Primary QR memperkuat posisi negosiasi dengan buyer.",
                 },
             ],
         },
@@ -385,7 +442,11 @@
             title: "WHFG (Warehouse Finished Goods)",
             subtitle: "Inbound Scan Barcode, Alokasi Rak & FIFO",
             color: "#38bdf8",
-            desc: "Penerimaan dus produk jadi. Operator scan Barcode Secondary dan input posisi rak & tanggal masuk via Aplikasi Inbound WHFG. Gate Alarm ESP32 aktif jika pintu terbuka >5 menit. App WHFG sebagai pembanding/integrasi sistem existing.",
+            statusTag: "RISET & TRIAL KONSEPTUAL",
+            statusColor: "#38bdf8",
+            statusNote:
+                "Masih sebatas riset konseptual di atas kertas (belum implementasi lapangan karena kendala tenaga & bahan).",
+            desc: "Penerimaan dus produk jadi. Operator scan Barcode Secondary dan input posisi rak & tanggal masuk via Aplikasi Inbound WHFG. Gate Alarm ESP32 aktif jika pintu terbuka >5 menit.",
             comparison: {
                 plc: "— (WHFG tidak berbasis PLC; existing: WMS & pallet management)",
                 iot: "Warehouse Gate Alarm ESP32 (>5 Menit = Alert + Reset Timer)",
@@ -394,57 +455,20 @@
             impact: [
                 {
                     div: "Warehouse/Logistics",
-                    text: "Posisi rak setiap karton tercatat digital — tim logistik locate produk siap kirim tanpa stock opname fisik, mempercepat outbound.",
+                    text: "Posisi rak setiap karton tercatat digital — cari produk siap kirim tanpa stock opname fisik.",
                 },
                 {
                     div: "PPIC",
-                    text: "Kapasitas gudang real-time jadi dasar keputusan: apakah produksi shift berikutnya bisa jalan atau perlu tunggu clearance gudang.",
+                    text: "Kapasitas gudang real-time jadi dasar keputusan jadwal produksi.",
                 },
                 {
                     div: "Management",
-                    text: "FIFO akurat + date-in tracking = early warning produk mendekati expiry sebelum jadi masalah retur atau pemusnahan.",
+                    text: "FIFO akurat + date-in tracking = early warning produk mendekati expiry.",
                 },
                 {
                     div: "Finance/Audit",
-                    text: "Cross-check Barcode SP vs penerimaan WHFG menutup titik terakhir traceability WHRM→WHFG — laporan yield final untuk manajemen tanpa rekap manual.",
+                    text: "Cross-check Barcode SP vs penerimaan WHFG menutup titik terakhir traceability.",
                 },
-            ],
-        },
-    ];
-
-    const summaryItems = [
-        {
-            icon: "X",
-            title: "Yang Bisa Didapat dari Sistem Ini",
-            items: [
-                "OEE per lini per shift/batch — berbasis data sensor aktual, bukan estimasi",
-                "Yield end-to-end WHRM → WHFG — susut bahan terlacak di tiap titik transfer",
-                "Cost per unit produk — breakdown energi (kWh), bahan baku, dan waste per batch",
-                "Traceability 100% — dari lot bahan mentah WHRM sampai posisi rak karton di WHFG",
-                "Reject rate MDCW per lini & batch — dasar cost of quality yang actionable",
-                "Audit log otomatis — siapa, kapan, mode apa, berapa lama di setiap mesin",
-            ],
-        },
-        {
-            icon: "X",
-            title: "Kemungkinan Peningkatan ke Depan",
-            items: [
-                "Integrasi ke ERP/MES — data sensor langsung masuk sistem perencanaan produksi",
-                "Predictive maintenance — model ML dari running hours & anomali daya PZEM/heater",
-                "Auto work order generation — PPIC bisa set trigger batch berikutnya dari data real-time",
-                "Dashboards mobile — akses supervisor & QC dari handphone tanpa buka PC",
-                "Integrasi BPOM/retailer compliance — export laporan traceability otomatis ke format regulasi",
-                "Digital twin — simulasi bottleneck & load balancing antar lini sebelum implementasi perubahan",
-            ],
-        },
-        {
-            icon: "X",
-            title: "Saran Tambahan",
-            items: [
-                "Prioritaskan WHRM + Mixing + MDCW dulu — ROI paling cepat terlihat dari susut bahan & reject rate",
-                "Dedicated server sejak awal — jangan bergabung di jaringan produksi untuk keamanan data & performa",
-                "Training AI Vision Mixing & Chilled perlu hardware awal yang layak — alokasi di fase 1",
-                "Standarisasi format data sensor dari awal — memudahkan integrasi ERP di masa depan tanpa refactor besar",
             ],
         },
     ];
@@ -469,11 +493,11 @@
         <div class="card-header">
             <div class="card-title-group">
                 <div class="card-title">
-                    Alur Material, Data &amp; Benefit Sistem
+                    Serah Terima &amp; Dokumentasi Riset IoT/PLC (1 Tahun)
                 </div>
                 <div class="card-subtitle">
-                    Rencana Planing IoT &amp; Digitalisasi PLC (WHRM &rarr;
-                    WHFG)
+                    Status Lapangan, Panduan Eksekusi &amp; Handover Divisi
+                    (WHRM &rarr; WHFG)
                 </div>
             </div>
             <div class="header-right">
@@ -482,14 +506,15 @@
                         class="toggle-btn {activeView === 'flow'
                             ? 'active-toggle'
                             : ''}"
-                        on:click={() => (activeView = "flow")}>Flow</button
+                        on:click={() => (activeView = "flow")}
+                        >Alur Tahapan</button
                     >
                     <button
-                        class="toggle-btn {activeView === 'summary'
+                        class="toggle-btn {activeView === 'handover'
                             ? 'active-toggle'
                             : ''}"
-                        on:click={() => (activeView = "summary")}
-                        >Ringkasan</button
+                        on:click={() => (activeView = "handover")}
+                        >&amp; Action Plan</button
                     >
                 </div>
                 <button
@@ -510,7 +535,7 @@
         ></div>
 
         {#if activeView === "flow"}
-            <!-- Card Body -->
+            <!-- Card Body — Flow View -->
             <div class="card-body">
                 <!-- Numeral Step Rail -->
                 <div class="numeral-rail">
@@ -547,8 +572,27 @@
                             >TAHAP {activeStep.code}</span
                         >
                         <span class="step-main-title">{activeStep.title}</span>
+                        <span
+                            class="status-pill-badge"
+                            style="background: {activeStep.statusColor}22; color: {activeStep.statusColor}; border-color: {activeStep.statusColor}55;"
+                        >
+                            {activeStep.statusTag}
+                        </span>
                     </div>
                     <div class="step-sub">{activeStep.subtitle}</div>
+
+                    <!-- Status Note Box -->
+                    <div
+                        class="status-note-banner"
+                        style="border-left-color: {activeStep.statusColor};"
+                    >
+                        <span
+                            class="status-lbl"
+                            style="color: {activeStep.statusColor};"
+                            >Status Lapangan:</span
+                        >
+                        <span class="status-txt">{activeStep.statusNote}</span>
+                    </div>
 
                     <div class="content-body">
                         <p>{activeStep.desc}</p>
@@ -607,21 +651,168 @@
                 </div>
             </div>
         {:else}
-            <!-- Summary View -->
+            <!-- Handover & Action Plan View -->
             <div class="summary-view">
-                {#each summaryItems as section}
-                    <div class="summary-section">
-                        <div class="summary-section-title">
-                            <span class="summary-icon">{section.icon}</span>
-                            {section.title}
-                        </div>
-                        <ul class="summary-list">
-                            {#each section.items as item}
-                                <li>{item}</li>
-                            {/each}
-                        </ul>
+                <!-- Exec Summary Banner -->
+                <div class="handover-banner">
+                    <div class="banner-tag">
+                        X Executive Summary — Riset 1 Tahun
                     </div>
-                {/each}
+                    <div class="banner-body">
+                        "Ini adalah gabungan hasil riset, eksperimen, dan
+                        perencanaan digitalisasi IoT &amp; PLC selama 1 tahun.
+                        Dokumen ini disusun untuk memberikan gambaran jujur
+                        tentang status aktual di lapangan, mana yang sudah
+                        sempat diuji, mana yang masih di atas kertas dan uji
+                        coba Komunikasi, serta langkah konkrit yang bisa
+                        langsung diambil oleh siapapun yang melanjutkannya."
+                    </div>
+                </div>
+
+                <!-- Status 13 Tahap Matrix -->
+                <div class="handover-card">
+                    <div class="card-section-title text-amber">
+                        <AlertTriangle size={15} />
+                        Status Realisasi 13 Tahap Alur Produksi
+                    </div>
+                    <div class="status-grid">
+                        <div class="status-box box-amber">
+                            <div class="box-head">
+                                <span class="badge-dot dot-amber"></span>
+                                In-Trial / Trial ke-2 (1 Tahap)
+                            </div>
+                            <div class="box-body">
+                                <b>01 WHRM (Gudang Bahan Baku)</b>
+                                <p>
+                                    Sudah masuk tahap trial ke-2 dan sempat
+                                    dibawa &amp; diuji coba saat event Pitstop
+                                    kemarin. Siap untuk tahap validasi lebih
+                                    lanjut.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="status-box box-red">
+                            <div class="box-head">
+                                <span class="badge-dot dot-red"></span>
+                                Implemented / On-Hold (2 Tahap)
+                            </div>
+                            <div class="box-body">
+                                <b>11 MDCW &amp; 12 SP (Secondary Packing)</b>
+                                <p>
+                                    Sudah pernah diimplementasikan, namun saat
+                                    ini <b>ON-HOLD</b> karena belum ada dedicated
+                                    server lokal (kalkulasi matematis &amp; kestabilan
+                                    jaringan jauh lebih solid di lokal daripada full
+                                    cloud). Alasan lain: terkendala ketersediaan
+                                    bahan &amp; tenaga untuk pre-resetting.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="status-box box-blue">
+                            <div class="box-head">
+                                <span class="badge-dot dot-blue"></span>
+                                Murni Riset &amp; Trial Konseptual (10 Tahap)
+                            </div>
+                            <div class="box-body">
+                                <b
+                                    >Mixing, Chilled, Hot Room, AN Line, UK,
+                                    Dimsum, Mie Line, IQF, PC, WHFG</b
+                                >
+                                <p>
+                                    Sejauh ini baru sebatas riset dan
+                                    perencanaan konseptual di atas kertas —
+                                    belum diimplementasikan di lapangan karena
+                                    kendala keterbatasan tenaga dan bahan uji
+                                    coba.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Actionable Steps (Week 1) -->
+                <div class="handover-card">
+                    <div class="card-section-title text-cyan">
+                        <Cpu size={15} />
+                        Next Actionable Step — Rekomendasi Minggu Pertama Penerus
+                    </div>
+                    <div class="action-list">
+                        <div class="action-item">
+                            <span class="action-num">1</span>
+                            <div class="action-text">
+                                <b>Validasi Weigher / Timbangan Fisik</b>
+                                <span
+                                    >Tentukan &amp; pastikan timbangan (weigher)
+                                    fix apa yang akan dipakai di stasiun
+                                    terkait. Lakukan modifikasi antarmuka jika
+                                    diperlukan, lalu masukkan data bobotnya ke
+                                    sistem.</span
+                                >
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-num">2</span>
+                            <div class="action-text">
+                                <b>Penguatan Logika &amp; Protokol Komunikasi</b
+                                >
+                                <span
+                                    >Untuk penerus, sangat disarankan memperkuat
+                                    fondasi <b>logic PLC</b>, komunikasi serial
+                                    <b>RS232</b>, <b>Modbus RTU RS485</b>,
+                                    komunikasi Ethernet (Eth), dan protokol IoT
+                                    pendukung.</span
+                                >
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-num">3</span>
+                            <div class="action-text">
+                                <b>Alokasi Dedicated Server Lokal</b>
+                                <span
+                                    >Sebelum melangkah ke deployment penuh,
+                                    prioritaskan pengadaan dedicated server
+                                    lokal agar pemrosesan data real-time &amp;
+                                    kalkulasi matematis tidak bergantung pada
+                                    jaringan cloud yang riskan.</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact & Inherited Assets -->
+                <div class="handover-card contact-card">
+                    <div class="card-section-title text-emerald">
+                        <Mail size={15} />
+                        Kontak &amp; Aset Riset
+                    </div>
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <span class="contact-lbl">Email Kontak:</span>
+                            <a
+                                href="mailto:lezztb@gmail.com"
+                                class="contact-val">lezztb@gmail.com</a
+                            >
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-lbl">WhatsApp:</span>
+                            <span class="contact-val"
+                                >Tersedia via WhatsApp</span
+                            >
+                        </div>
+                        <div class="contact-item full-width">
+                            <span class="contact-lbl">Aset :</span>
+                            <span class="contact-desc"
+                                >Source code project yang sudah dirapikan. <a
+                                    href="https://github.com/ppa-project"
+                                    >Klik Me</a
+                                ></span
+                            >
+                        </div>
+                    </div>
+                </div>
             </div>
         {/if}
     </div>
@@ -635,7 +826,7 @@
         width: 100vw;
         height: 100vh;
         z-index: 5000;
-        background: rgba(2, 6, 17, 0.82);
+        background: rgba(2, 6, 17, 0.85);
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
         display: flex;
@@ -657,7 +848,7 @@
     }
 
     .summary-card {
-        width: min(700px, calc(100vw - 32px));
+        width: min(720px, calc(100vw - 32px));
         max-height: calc(100vh - 48px);
         display: flex;
         flex-direction: column;
@@ -718,10 +909,10 @@
         background: transparent;
         border: none;
         color: #7c93ad;
-        font-size: 11px;
+        font-size: 10.5px;
         font-family: "JetBrains Mono", monospace;
         font-weight: 600;
-        padding: 4px 10px;
+        padding: 4px 9px;
         cursor: pointer;
         transition: all 0.18s ease;
     }
@@ -809,6 +1000,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        flex-wrap: wrap;
     }
 
     .step-badge {
@@ -826,11 +1018,45 @@
         color: #ffffff;
     }
 
+    .status-pill-badge {
+        margin-left: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8.5px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 4px;
+        border: 1px solid;
+    }
+
     .step-sub {
         font-size: 10.5px;
         color: #94a3b8;
         font-family: "JetBrains Mono", monospace;
         margin-top: -4px;
+    }
+
+    .status-note-banner {
+        background: rgba(2, 6, 17, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-left: 3px solid #f59e0b;
+        padding: 7px 10px;
+        border-radius: 5px;
+        font-size: 11px;
+        line-height: 1.4;
+        display: flex;
+        gap: 6px;
+    }
+
+    .status-lbl {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: 9.5px;
+        text-transform: uppercase;
+        flex-shrink: 0;
+    }
+
+    .status-txt {
+        color: #cbd5e1;
     }
 
     .content-body {
@@ -891,7 +1117,7 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
         padding: 9px 11px;
         border-radius: 6px;
-        max-height: 160px;
+        max-height: 150px;
         overflow-y: auto;
     }
 
@@ -940,14 +1166,14 @@
         line-height: 1.4;
     }
 
-    /* Summary View */
+    /* Handover View Styles */
     .summary-view {
         flex: 1;
         overflow-y: auto;
         padding: 14px 18px 18px;
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 12px;
     }
 
     .summary-view::-webkit-scrollbar {
@@ -958,49 +1184,214 @@
         border-radius: 4px;
     }
 
-    .summary-section {
-        background: rgba(2, 6, 17, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        border-radius: 8px;
+    .handover-banner {
+        background: linear-gradient(
+            135deg,
+            rgba(14, 165, 233, 0.12),
+            rgba(99, 102, 241, 0.12)
+        );
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        border-radius: 10px;
         padding: 12px 14px;
     }
 
-    .summary-section-title {
-        font-size: 12.5px;
+    .banner-tag {
+        font-family: "JetBrains Mono", monospace;
         font-weight: 700;
-        color: #e2e8f0;
-        margin-bottom: 10px;
+        font-size: 11px;
+        color: #38bdf8;
+        margin-bottom: 6px;
+    }
+
+    .banner-body {
+        font-size: 11.5px;
+        color: #cbd5e1;
+        line-height: 1.5;
+        font-style: italic;
+    }
+
+    .handover-card {
+        background: rgba(2, 6, 17, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 12px 14px;
+    }
+
+    .card-section-title {
+        font-size: 12px;
+        font-weight: 700;
+        font-family: "JetBrains Mono", monospace;
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 6px;
+        margin-bottom: 10px;
     }
 
-    .summary-icon {
-        font-size: 15px;
+    .text-amber {
+        color: #f59e0b;
+    }
+    .text-cyan {
+        color: #06b6d4;
+    }
+    .text-emerald {
+        color: #10b981;
     }
 
-    .summary-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
+    .status-grid {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
     }
 
-    .summary-list li {
-        font-size: 11.5px;
-        color: #94a3b8;
-        line-height: 1.45;
-        padding-left: 12px;
-        position: relative;
+    .status-box {
+        background: rgba(3, 10, 24, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-left: 3.5px solid;
+        border-radius: 6px;
+        padding: 8px 10px;
     }
 
-    .summary-list li::before {
-        content: "›";
-        position: absolute;
-        left: 0;
-        color: #00f0ff;
+    .box-amber {
+        border-left-color: #f59e0b;
+    }
+    .box-red {
+        border-left-color: #ef4444;
+    }
+    .box-blue {
+        border-left-color: #38bdf8;
+    }
+
+    .box-head {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
         font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #e2e8f0;
+        margin-bottom: 4px;
+    }
+
+    .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .dot-amber {
+        background: #f59e0b;
+        box-shadow: 0 0 6px #f59e0b;
+    }
+    .dot-red {
+        background: #ef4444;
+        box-shadow: 0 0 6px #ef4444;
+    }
+    .dot-blue {
+        background: #38bdf8;
+        box-shadow: 0 0 6px #38bdf8;
+    }
+
+    .box-body b {
+        font-size: 11px;
+        color: #ffffff;
+        display: block;
+    }
+
+    .box-body p {
+        font-size: 10.5px;
+        color: #94a3b8;
+        margin: 2px 0 0 0;
+        line-height: 1.4;
+    }
+
+    .action-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .action-item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        background: rgba(3, 10, 24, 0.6);
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .action-num {
+        background: rgba(6, 182, 212, 0.2);
+        color: #06b6d4;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: 11px;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .action-text b {
+        font-size: 11.5px;
+        color: #e2e8f0;
+        display: block;
+    }
+
+    .action-text span {
+        font-size: 10.5px;
+        color: #94a3b8;
+        line-height: 1.4;
+        display: block;
+        margin-top: 1px;
+    }
+
+    .contact-card {
+        background: linear-gradient(
+            135deg,
+            rgba(16, 185, 129, 0.08),
+            rgba(6, 182, 212, 0.08)
+        );
+        border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .contact-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .contact-item.full-width {
+        grid-column: span 2;
+    }
+
+    .contact-lbl {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9.5px;
+        font-weight: 700;
+        color: #7c93ad;
+        text-transform: uppercase;
+    }
+
+    .contact-val {
+        font-size: 11.5px;
+        font-weight: 700;
+        color: #10b981;
+        font-family: "JetBrains Mono", monospace;
+    }
+
+    .contact-desc {
+        font-size: 10.5px;
+        color: #cbd5e1;
+        line-height: 1.4;
     }
 </style>
