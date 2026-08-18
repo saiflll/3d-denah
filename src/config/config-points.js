@@ -8,9 +8,9 @@ import { boiler, workshop, qclab, machineRunHours } from './points/support.js';
 
 export const staticCells = [
     { fromRow: 66, toRow: 66, fromCol: 1, toCol: 99, height: 3.2, color: "#334155" },
-    { fromRow: 5, toRow: 5, fromCol: 1, toCol: 99, height: 3.2, color: "#334155" },
-    { fromRow: 5, toRow: 66, fromCol: 1, toCol: 1, height: 3.2, color: "#334155" },
-    { fromRow: 5, toRow: 66, fromCol: 99, toCol: 99, height: 3.2, color: "#334155" }
+    { fromRow: 6, toRow: 6, fromCol: 1, toCol: 99, height: 3.2, color: "#334155" },
+    { fromRow: 6, toRow: 66, fromCol: 1, toCol: 1, height: 3.2, color: "#334155" },
+    { fromRow: 6, toRow: 66, fromCol: 99, toCol: 99, height: 3.2, color: "#334155" }
 ];
 
 export const sitePoints = [

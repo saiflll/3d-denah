@@ -251,7 +251,30 @@ export const machineRunHours = {
         ]
     },
     cells: [
-        { fromRow: 31, toRow: 33, fromCol: 58, toCol: 62, height: 8, color: "#eab308" }
+        { fromRow: 13, toRow: 15, fromCol: 47, toCol: 50, height: 8, color: "#eab308" },
+        { fromRow: 13, toRow: 14, fromCol: 33, toCol: 35, height: 8, color: "#eab308" },
+        { fromRow: 19, toRow: 20, fromCol: 33, toCol: 35, height: 8, color: "#eab308" },
+        { fromRow: 14, toRow: 14, fromCol: 28, toCol: 30, height: 8, color: "#eab308" },
+        { fromRow: 19, toRow: 20, fromCol: 28, toCol: 30, height: 8, color: "#eab308" },
+        { row: 27, col: 30, height: 8, color: "#eab308" },
+        { row: 33, col: 32, height: 8, color: "#eab308" },
+        { row: 40, col: 31, height: 8, color: "#eab308" },
+        { fromRow: 43, toRow: 44, fromCol: 29, toCol: 30, height: 8, color: "#eab308" },
+        { fromRow: 49, toRow: 50, fromCol: 29, toCol: 30, height: 8, color: "#eab308" },
+        { fromRow: 54, toRow: 55, fromCol: 29, toCol: 31, height: 8, color: "#eab308" },
+        { row: 60, col: 30, height: 8, color: "#eab308" },
+        { fromRow: 13, toRow: 15, fromCol: 63, toCol: 66, height: 8, color: "#eab308" },
+        { row: 14, col: 58, height: 8, color: "#eab308" },
+        { fromRow: 19, toRow: 20, fromCol: 53, toCol: 56, height: 8, color: "#eab308" },
+        { fromRow: 19, toRow: 20, fromCol: 63, toCol: 65, height: 8, color: "#eab308" },
+        { row: 53, col: 54, height: 8, color: "#eab308" },
+        { fromRow: 50, toRow: 51, fromCol: 47, toCol: 51, height: 8, color: "#eab308" },
+        { fromRow: 58, toRow: 58, fromCol: 44, toCol: 47, height: 8, color: "#eab308" },
+        { fromRow: 59, toRow: 59, fromCol: 49, toCol: 52, height: 8, color: "#eab308" },
+        { fromRow: 57, toRow: 57, fromCol: 52, toCol: 54, height: 8, color: "#eab308" },
+        { fromRow: 51, toRow: 53, fromCol: 58, toCol: 60, height: 8, color: "#eab308" },
+        { row: 59, col: 61, height: 8, color: "#eab308" }
+
     ]
 };
 
