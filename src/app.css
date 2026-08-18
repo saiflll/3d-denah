@@ -1,6 +1,5 @@
-/* ============================================================
-   RESET DASAR & LATAR (Base Setup & Body Canvas)
-   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,9 +16,6 @@ html, body {
     color: #e2e8f0;
 }
 
-/* ============================================================
-   LAYER 1: KANVAS PETA 3D (3D Map Canvas / Latar Belakang)
-   ============================================================ */
 #map, .layer-map-canvas {
     position: absolute;
     top: 0;
@@ -35,9 +31,17 @@ html, body {
     cursor: grabbing;
 }
 
-/* ============================================================
-   LOCK SCREEN MINIMALIS (Terminal & Analyst Minimalist Auth)
-   ============================================================ */
+.wx {
+    text-decoration: none;
+    color: #00f0ff;
+    transition: color 0.2s ease;
+}
+
+.wx:hover {
+    color: #ffffff;
+    text-decoration-thickness: 2px;
+}
+
 .lock-screen-overlay {
     position: fixed;
     top: 0;
@@ -68,17 +72,6 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 14px;
-}
-
-.lock-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    color: #475569;
-    letter-spacing: 1.5px;
 }
 
 .lock-dot {
@@ -145,11 +138,6 @@ html, body {
     transition: all 0.2s ease;
 }
 
-.pin-submit-btn svg {
-    width: 14px;
-    height: 14px;
-}
-
 .pin-submit-btn:hover {
     color: #ffffff;
     background: #00f0ff;
@@ -175,9 +163,6 @@ html, body {
     40%, 80% { transform: translateX(4px); }
 }
 
-/* ============================================================
-   PANEL TAB KATEGORI KIRI BAWAH (Compact Vertical Stacked HUD)
-   ============================================================ */
 #category-tab-panel, .panel-category-tabs {
     position: absolute;
     bottom: 24px;
@@ -248,9 +233,6 @@ html, body {
     box-shadow: 0 0 8px #00f0ff;
 }
 
-/* ============================================================
-   LAYER 2: OVERLAY TOMBOL PIN & KARTU INFO (UI Marker & Info Card Overlay)
-   ============================================================ */
 #ui-overlay, .layer-btn-overlay {
     position: absolute;
     top: 0;
@@ -262,7 +244,6 @@ html, body {
     overflow: hidden;
 }
 
-/* KARTU PIN LANDSCAPE (Neon Cyber Glow Card Pin) */
 .btn-marker-card {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -286,14 +267,8 @@ html, body {
 }
 
 @keyframes pinPopIn {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -30%) scale(0.6);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
+    0% { opacity: 0; transform: translate(-50%, -30%) scale(0.6); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
 .btn-marker-card:hover {
@@ -308,7 +283,6 @@ html, body {
     transform: translate(-50%, -50%) scale(0.95);
 }
 
-/* Indikator Titik Animasi Heartbeat (Left Status Dot with Heartbeat) */
 .marker-dot-wrapper {
     position: relative;
     width: 10px;
@@ -338,18 +312,9 @@ html, body {
 }
 
 @keyframes heartbeat {
-    0% {
-        transform: scale(1);
-        opacity: 0.7;
-    }
-    50% {
-        transform: scale(2.6);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(2.6);
-        opacity: 0;
-    }
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(2.6); opacity: 0; }
+    100% { transform: scale(2.6); opacity: 0; }
 }
 
 .marker-label {
@@ -361,7 +326,6 @@ html, body {
     text-transform: uppercase;
 }
 
-/* STATUS AKTIF / TERPILIH (Active State on Click) */
 .btn-marker-card.active {
     border-color: var(--active-color, #00f0ff);
     background: rgba(3, 12, 28, 0.98);
@@ -375,9 +339,6 @@ html, body {
     font-weight: 700;
 }
 
-/* ============================================================
-   KARTU INFORMASI / STATISTIK DETAIL (Executive Cyber HUD Glass Card)
-   ============================================================ */
 .site-info-card {
     position: absolute;
     z-index: 120;
@@ -406,25 +367,11 @@ html, body {
     transform: translateY(0) scale(1);
 }
 
-/* 4 Pilihan Posisi Lokasi Kartu di Layar */
-.site-info-card.pos-top-left {
-    top: 24px;
-    left: 24px;
-}
-.site-info-card.pos-top-right {
-    top: 24px;
-    right: 24px;
-}
-.site-info-card.pos-bottom-left {
-    bottom: 95px;
-    left: 24px;
-}
-.site-info-card.pos-bottom-right {
-    bottom: 80px;
-    right: 24px;
-}
+.site-info-card.pos-top-left { top: 24px; left: 24px; }
+.site-info-card.pos-top-right { top: 24px; right: 24px; }
+.site-info-card.pos-bottom-left { bottom: 95px; left: 24px; }
+.site-info-card.pos-bottom-right { bottom: 80px; right: 24px; }
 
-/* Bagian Header Kartu */
 .card-header {
     display: flex;
     align-items: flex-start;
@@ -481,7 +428,6 @@ html, body {
     transform: scale(1.1);
 }
 
-/* Grid Metrik & Angka Statistik */
 .card-metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
@@ -499,10 +445,20 @@ html, body {
     transition: all 0.2s ease;
 }
 
-.metric-item:hover {
+.metric-item.clickable {
+    cursor: pointer;
+}
+
+.metric-item:hover, .metric-item.clickable:hover {
     background: rgba(4, 14, 34, 0.95);
     border-color: rgba(0, 240, 255, 0.35);
     box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+.metric-item.active-tab {
+    background: rgba(4, 20, 48, 0.98);
+    border-color: var(--metric-color, #00f0ff);
+    box-shadow: 0 0 14px var(--metric-color, rgba(0, 240, 255, 0.3));
 }
 
 .metric-label {
@@ -514,6 +470,10 @@ html, body {
     letter-spacing: 0.6px;
 }
 
+.metric-item.active-tab .metric-label {
+    color: #94a3b8;
+}
+
 .metric-value {
     font-size: 14px;
     font-weight: 700;
@@ -522,20 +482,17 @@ html, body {
     margin-top: 3px;
 }
 
-/* Info Keterangan Bawah */
 .card-info-text {
     font-size: 11px;
-    line-height: 1.5;
-    color: #94a3b8;
-    background: rgba(2, 6, 17, 0.7);
-    padding: 8px 10px;
+    line-height: 1.55;
+    color: #cbd5e1;
+    background: rgba(2, 6, 17, 0.75);
+    padding: 10px 12px;
     border-radius: 6px;
-    border-left: 2px solid var(--card-theme-color, #00f0ff);
+    border-left: 3px solid var(--card-theme-color, #00f0ff);
+    transition: opacity 0.15s ease-in-out;
 }
 
-/* ============================================================
-   TOOLBAR: KONTROL KAMERA (Cyber Floating Controls)
-   ============================================================ */
 #cam-ctrl-panel, .panel-nav-ctrl {
     position: absolute;
     bottom: 24px;
@@ -559,19 +516,13 @@ html, body {
     height: 34px;
     background: transparent;
     border: none;
-    border-radius: 9px;
+    border-radius: 9999px;
     color: #64748b;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ctrl-btn svg {
-    width: 16px;
-    height: 16px;
-    stroke-width: 2.2;
 }
 
 .ctrl-btn:hover {
@@ -589,3 +540,4 @@ html, body {
     background: rgba(0, 240, 255, 0.12);
     margin: 2px 4px;
 }
+

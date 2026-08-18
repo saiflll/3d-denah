@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Grid Coordinate & Multi-Region Picker Tool</title>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #07111b;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #e2e8f0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            z-index: 10;
+            cursor: crosshair;
+        }
+
+        /* Side Panel Controls & Inspector */
+        #inspector-panel {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            border-radius: 12px;
+            padding: 16px 18px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+            width: 380px;
+            max-height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+            color: #38bdf8;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mode-switcher {
+            display: flex;
+            background: #1e293b;
+            padding: 3px;
+            border-radius: 8px;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 6px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .coord-status-box {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 12.5px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .coord-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .coord-val {
+            font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .control-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .control-group label {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .control-group input[type="number"],
+        .control-group input[type="color"] {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            width: 100%;
+            height: 30px;
+        }
+
+        /* List of Added Regions */
+        .region-list-container {
+            flex: 1;
+            min-height: 100px;
+            max-height: 180px;
+            overflow-y: auto;
+            background: #09131d;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .region-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #142232;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 11.5px;
+            font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace;
+        }
+
+        .region-color-badge {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .btn-del-item {
+            background: transparent;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .btn-del-item:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .code-box {
+            background: #060e17;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace;
+            font-size: 11.5px;
+            color: #4ade80;
+            max-height: 140px;
+            overflow-y: auto;
+            user-select: all;
+            white-space: pre-wrap;
+            flex-shrink: 0;
+        }
+
+        .btn-action-group {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-tool {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #f8fafc;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-tool:hover {
+            background: #0284c7;
+            border-color: #38bdf8;
+        }
+
+        .btn-tool.btn-danger:hover {
+            background: #dc2626;
+            border-color: #ef4444;
+        }
+
+        /* Tips Petunjuk Floating */
+        #hint-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 8px 22px;
+            border-radius: 20px;
+            color: #38bdf8;
+            font-size: 12.5px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Panel Inspector Grid & Code Output -->
+    <div id="inspector-panel">
+        <div class="panel-header">
+            <div class="header-title">
+                <i data-lucide="grid"></i>
+                <span>3D Grid Picker (Multi-Region)</span>
+            </div>
+        </div>
+
+        <!-- Switcher Mode Selection -->
+        <div class="mode-switcher">
+            <button id="mode-region-btn" class="mode-btn active" onclick="setMode('region')">
+                <i data-lucide="box" style="width:13px;height:13px;"></i>
+                <span>Area Rentang</span>
+            </button>
+            <button id="mode-pin-btn" class="mode-btn" onclick="setMode('pin')">
+                <i data-lucide="map-pin" style="width:13px;height:13px;"></i>
+                <span>Pin Point</span>
+            </button>
+        </div>
+
+        <!-- Status Coordinate Display -->
+        <div class="coord-status-box">
+            <div class="coord-row">
+                <span>Hover:</span>
+                <span id="hover-coord" class="coord-val">Row: - , Col: -</span>
+            </div>
+            <div class="coord-row">
+                <span>Point 1 (Awal):</span>
+                <span id="start-coord" class="coord-val">Row: - , Col: -</span>
+            </div>
+            <div class="coord-row">
+                <span>Point 2 (Akhir):</span>
+                <span id="end-coord" class="coord-val">Row: - , Col: -</span>
+            </div>
+        </div>
+
+        <!-- Controls Height & Color -->
+        <div class="controls-row">
+            <div class="control-group">
+                <label>Tinggi Cell (height)</label>
+                <input type="number" id="cell-height-input" value="8" min="1" max="50">
+            </div>
+            <div class="control-group">
+                <label>Warna (color)</label>
+                <input type="color" id="cell-color-input" value="#0d9488">
+            </div>
+        </div>
+
+        <!-- Selected Regions List -->
+        <div class="control-group">
+            <label style="display:flex;justify-content:space-between;">
+                <span>Daftar Cell Tersimpan (<span id="count-region">0</span>):</span>
+                <span style="color:#38bdf8;cursor:pointer;" onclick="clearSelectedRegions()">Clear All</span>
+            </label>
+            <div id="region-list" class="region-list-container">
+                <div style="font-size:11px;color:#64748b;text-align:center;padding:12px;">
+                    Belum ada area ditambahkan. Klik 2 titik di denah untuk menambah area baru.
+                </div>
+            </div>
+        </div>
+
+        <!-- Output JS Code -->
+        <div id="code-result" class="code-box">// Klik pada denah untuk memilih area</div>
+
+        <div class="btn-action-group">
+            <button class="btn-tool" onclick="copyCode()">
+                <i data-lucide="copy" style="width:14px;height:14px;"></i>
+                <span>Copy Code</span>
+            </button>
+            <button class="btn-tool btn-danger" onclick="resetAll()">
+                <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
+                <span>Reset</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Hint Panel Footer -->
+    <div id="hint-panel">
+        💡 <b>Mode Area:</b> Klik <b>Titik 1</b> lalu Klik <b>Titik 2</b> di denah untuk menambahkan area (bisa tambah banyak area terpisah!).
+    </div>
+
+    <div id="map"></div>
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        (() => {
+            const MAP_W = 297;
+            const MAP_D = 210;
+            const COLS = 99;
+            const ROWS = 70;
+            const CELL_W = MAP_W / COLS;
+            const CELL_D = MAP_D / ROWS;
+
+            const container = document.getElementById('map');
+            const hoverCoordEl = document.getElementById('hover-coord');
+            const startCoordEl = document.getElementById('start-coord');
+            const endCoordEl = document.getElementById('end-coord');
+            const codeResultEl = document.getElementById('code-result');
+            const regionListEl = document.getElementById('region-list');
+            const countRegionEl = document.getElementById('count-region');
+
+            let scene, camera, renderer, raycaster, floor, highlightMesh, draftPreviewMesh;
+            let currentMode = 'region'; // 'region' or 'pin'
+            let startPoint = null;
+            let pinCoord = null;
+
+            // List of confirmed selected regions
+            let savedRegions = [];
+            let meshGroup;
+
+            function init() {
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x07111b);
+
+                camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
+                
+                const aspect = container.clientWidth / container.clientHeight;
+                const fov = 35 * (Math.PI / 180);
+                let dist = (Math.max(MAP_W, MAP_D) / 2) / Math.tan(fov / 2);
+                if (aspect < 1) dist /= aspect;
+                
+                camera.position.set(0, dist * 1.35, 0.001);
+                camera.lookAt(0, 0, 0);
+
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
+
+                scene.add(new THREE.HemisphereLight(0xffffff, 0x07111b, 1.0));
+
+                // Load Denah Floor
+                const textureLoader = new THREE.TextureLoader();
+                const mapTexture = textureLoader.load('/drawing-1.svg');
+                floor = new THREE.Mesh(
+                    new THREE.PlaneGeometry(MAP_W, MAP_D),
+                    new THREE.MeshBasicMaterial({ map: mapTexture, transparent: true, opacity: 0.95 })
+                );
+                floor.rotation.x = -Math.PI / 2;
+                scene.add(floor);
+
+                // Grid lines overlay
+                const gridHelper = new THREE.GridHelper(Math.max(MAP_W, MAP_D), Math.max(COLS, ROWS), 0x1e5a78, 0x143c52);
+                gridHelper.scale.set(MAP_W / Math.max(MAP_W, MAP_D), 1, MAP_D / Math.max(MAP_W, MAP_D));
+                gridHelper.position.y = 0.005;
+                scene.add(gridHelper);
+
+                // Group for confirmed selection meshes
+                meshGroup = new THREE.Group();
+                scene.add(meshGroup);
+
+                // Hover Cell Mesh
+                highlightMesh = new THREE.Mesh(
+                    new THREE.PlaneGeometry(CELL_W, CELL_D),
+                    new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.55, side: THREE.DoubleSide })
+                );
+                highlightMesh.rotation.x = -Math.PI / 2;
+                highlightMesh.position.y = 0.01;
+                highlightMesh.visible = false;
+                scene.add(highlightMesh);
+
+                // Draft Region Preview Mesh
+                draftPreviewMesh = new THREE.Mesh(
+                    new THREE.PlaneGeometry(1, 1),
+                    new THREE.MeshBasicMaterial({ color: 0xf43f5e, transparent: true, opacity: 0.45, side: THREE.DoubleSide })
+                );
+                draftPreviewMesh.rotation.x = -Math.PI / 2;
+                draftPreviewMesh.position.y = 0.015;
+                draftPreviewMesh.visible = false;
+                scene.add(draftPreviewMesh);
+
+                raycaster = new THREE.Raycaster();
+
+                attachEvents();
+                window.addEventListener('resize', onResize);
+                animate();
+            }
+
+            function getGridCoordFromPoint(point) {
+                const col = Math.floor(((point.x + MAP_W / 2) / MAP_W) * COLS) + 1;
+                const row = Math.floor(((point.z + MAP_D / 2) / MAP_D) * ROWS) + 1;
+                if (col < 1 || col > COLS || row < 1 || row > ROWS) return null;
+                return { row, col };
+            }
+
+            function attachEvents() {
+                const dom = renderer.domElement;
+
+                dom.addEventListener('pointermove', e => {
+                    const rect = dom.getBoundingClientRect();
+                    const mouse = new THREE.Vector2(
+                        ((e.clientX - rect.left) / rect.width) * 2 - 1,
+                        -((e.clientY - rect.top) / rect.height) * 2 + 1
+                    );
+
+                    raycaster.setFromCamera(mouse, camera);
+                    const intersects = raycaster.intersectObject(floor);
+
+                    if (intersects.length > 0) {
+                        const coord = getGridCoordFromPoint(intersects[0].point);
+                        if (coord) {
+                            hoverCoordEl.innerText = `Row: ${coord.row}, Col: ${coord.col}`;
+                            
+                            const posX = (coord.col - 0.5) * CELL_W - MAP_W / 2;
+                            const posZ = (coord.row - 0.5) * CELL_D - MAP_D / 2;
+                            highlightMesh.position.set(posX, 0.01, posZ);
+                            highlightMesh.visible = true;
+
+                            if (startPoint && currentMode === 'region') {
+                                updateDraftPreviewBox(startPoint, coord);
+                            }
+                        }
+                    } else {
+                        highlightMesh.visible = false;
+                    }
+                });
+
+                dom.addEventListener('click', e => {
+                    const rect = dom.getBoundingClientRect();
+                    const mouse = new THREE.Vector2(
+                        ((e.clientX - rect.left) / rect.width) * 2 - 1,
+                        -((e.clientY - rect.top) / rect.height) * 2 + 1
+                    );
+
+                    raycaster.setFromCamera(mouse, camera);
+                    const intersects = raycaster.intersectObject(floor);
+
+                    if (intersects.length > 0) {
+                        const coord = getGridCoordFromPoint(intersects[0].point);
+                        if (!coord) return;
+
+                        if (currentMode === 'pin') {
+                            pinCoord = coord;
+                            startCoordEl.innerText = `Pin Row: ${pinCoord.row}, Col: ${pinCoord.col}`;
+                            endCoordEl.innerText = `Row: - , Col: -`;
+                            generateCode();
+                            return;
+                        }
+
+                        // Mode Region
+                        if (!startPoint) {
+                            startPoint = coord;
+                            startCoordEl.innerText = `Row: ${startPoint.row}, Col: ${startPoint.col}`;
+                            endCoordEl.innerText = `Row: - , Col: -`;
+                            updateDraftPreviewBox(startPoint, startPoint);
+                        } else {
+                            const endPoint = coord;
+                            endCoordEl.innerText = `Row: ${endPoint.row}, Col: ${endPoint.col}`;
+
+                            const minR = Math.min(startPoint.row, endPoint.row);
+                            const maxR = Math.max(startPoint.row, endPoint.row);
+                            const minC = Math.min(startPoint.col, endPoint.col);
+                            const maxC = Math.max(startPoint.col, endPoint.col);
+
+                            const heightVal = parseInt(document.getElementById('cell-height-input').value) || 8;
+                            const colorVal = document.getElementById('cell-color-input').value || '#0d9488';
+
+                            const newRegion = {
+                                fromRow: minR,
+                                toRow: maxR,
+                                fromCol: minC,
+                                toCol: maxC,
+                                height: heightVal,
+                                color: colorVal
+                            };
+
+                            savedRegions.push(newRegion);
+                            startPoint = null;
+                            draftPreviewMesh.visible = false;
+                            
+                            renderSavedRegionMeshes();
+                            updateRegionListUI();
+                            generateCode();
+                        }
+                    }
+                });
+            }
+
+            function updateDraftPreviewBox(p1, p2) {
+                const minR = Math.min(p1.row, p2.row);
+                const maxR = Math.max(p1.row, p2.row);
+                const minC = Math.min(p1.col, p2.col);
+                const maxC = Math.max(p1.col, p2.col);
+
+                const width = (maxC - minC + 1) * CELL_W;
+                const depth = (maxR - minR + 1) * CELL_D;
+
+                const centerX = ((minC + maxC) / 2) * CELL_W - MAP_W / 2;
+                const centerZ = ((minR + maxR) / 2) * CELL_D - MAP_D / 2;
+
+                draftPreviewMesh.geometry.dispose();
+                draftPreviewMesh.geometry = new THREE.PlaneGeometry(width, depth);
+                draftPreviewMesh.position.set(centerX, 0.015, centerZ);
+                draftPreviewMesh.visible = true;
+            }
+
+            function renderSavedRegionMeshes() {
+                // Clear old meshes
+                while (meshGroup.children.length > 0) {
+                    const obj = meshGroup.children[0];
+                    obj.geometry.dispose();
+                    obj.material.dispose();
+                    meshGroup.remove(obj);
+                }
+
+                // Render each saved region
+                savedRegions.forEach(reg => {
+                    const width = (reg.toCol - reg.fromCol + 1) * CELL_W;
+                    const depth = (reg.toRow - reg.fromRow + 1) * CELL_D;
+                    const centerX = ((reg.fromCol + reg.toCol) / 2) * CELL_W - MAP_W / 2;
+                    const centerZ = ((reg.fromRow + reg.toRow) / 2) * CELL_D - MAP_D / 2;
+
+                    const mat = new THREE.MeshBasicMaterial({
+                        color: new THREE.Color(reg.color),
+                        transparent: true,
+                        opacity: 0.65,
+                        side: THREE.DoubleSide
+                    });
+                    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, depth), mat);
+                    mesh.rotation.x = -Math.PI / 2;
+                    mesh.position.set(centerX, 0.02, centerZ);
+                    meshGroup.add(mesh);
+                });
+            }
+
+            function updateRegionListUI() {
+                countRegionEl.innerText = savedRegions.length;
+                if (savedRegions.length === 0) {
+                    regionListEl.innerHTML = `<div style="font-size:11px;color:#64748b;text-align:center;padding:12px;">Belum ada area ditambahkan. Klik 2 titik di denah untuk menambah area baru.</div>`;
+                    return;
+                }
+
+                let html = '';
+                savedRegions.forEach((reg, idx) => {
+                    const label = reg.fromRow === reg.toRow && reg.fromCol === reg.toCol
+                        ? `Cell (R:${reg.fromRow}, C:${reg.fromCol})`
+                        : `Region ${idx + 1} (R:${reg.fromRow}-${reg.toRow}, C:${reg.fromCol}-${reg.toCol})`;
+                    
+                    html += `
+                        <div class="region-item">
+                            <div>
+                                <span class="region-color-badge" style="background-color:${reg.color};"></span>
+                                <span>${label}</span>
+                            </div>
+                            <button class="btn-del-item" onclick="removeRegion(${idx})" title="Hapus Area">✕</button>
+                        </div>
+                    `;
+                });
+                regionListEl.innerHTML = html;
+            }
+
+            window.removeRegion = function(idx) {
+                savedRegions.splice(idx, 1);
+                renderSavedRegionMeshes();
+                updateRegionListUI();
+                generateCode();
+            };
+
+            window.clearSelectedRegions = function() {
+                savedRegions = [];
+                renderSavedRegionMeshes();
+                updateRegionListUI();
+                generateCode();
+            };
+
+            window.setMode = function(mode) {
+                currentMode = mode;
+                document.getElementById('mode-region-btn').classList.toggle('active', mode === 'region');
+                document.getElementById('mode-pin-btn').classList.toggle('active', mode === 'pin');
+                
+                const hintEl = document.getElementById('hint-panel');
+                if (mode === 'pin') {
+                    hintEl.innerHTML = `💡 <b>Mode Pin:</b> Klik pada cell di denah untuk menyetel koordinat <code>pin: { row, col }</code>.`;
+                } else {
+                    hintEl.innerHTML = `💡 <b>Mode Area:</b> Klik <b>Titik 1</b> lalu Klik <b>Titik 2</b> di denah untuk menambahkan area (bisa tambah banyak area terpisah!).`;
+                }
+            };
+
+            function generateCode() {
+                let codeStr = '';
+                if (pinCoord) {
+                    codeStr += `pin: { row: ${pinCoord.row}, col: ${pinCoord.col} },\n`;
+                }
+                
+                if (savedRegions.length > 0) {
+                    codeStr += `cells: [\n`;
+                    savedRegions.forEach((reg, i) => {
+                        const isLast = i === savedRegions.length - 1;
+                        if (reg.fromRow === reg.toRow && reg.fromCol === reg.toCol) {
+                            codeStr += `    { row: ${reg.fromRow}, col: ${reg.fromCol}, height: ${reg.height}, color: "${reg.color}" }${isLast ? '' : ','}\n`;
+                        } else {
+                            codeStr += `    { fromRow: ${reg.fromRow}, toRow: ${reg.toRow}, fromCol: ${reg.fromCol}, toCol: ${reg.toCol}, height: ${reg.height}, color: "${reg.color}" }${isLast ? '' : ','}\n`;
+                        }
+                    });
+                    codeStr += `]`;
+                }
+
+                if (!codeStr) {
+                    codeResultEl.innerText = `// Klik pada denah untuk memilih area / pin point`;
+                } else {
+                    codeResultEl.innerText = codeStr;
+                }
+            }
+
+            window.resetAll = function() {
+                startPoint = null;
+                pinCoord = null;
+                savedRegions = [];
+                startCoordEl.innerText = `Row: - , Col: -`;
+                endCoordEl.innerText = `Row: - , Col: -`;
+                draftPreviewMesh.visible = false;
+                renderSavedRegionMeshes();
+                updateRegionListUI();
+                generateCode();
+            };
+
+            window.copyCode = function() {
+                const text = codeResultEl.innerText;
+                if (text && !text.startsWith('//')) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        alert('Kode JS berhasil di-copy ke clipboard!\n\n' + text);
+                    });
+                }
+            };
+
+            function onResize() {
+                const w = container.clientWidth, h = container.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+
+            function animate() {
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            }
+
+            init();
+            lucide.createIcons();
+        })();
+    </script>
+</body>
+
+</html>
