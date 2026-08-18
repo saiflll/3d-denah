@@ -493,11 +493,10 @@
         <div class="card-header">
             <div class="card-title-group">
                 <div class="card-title">
-                    Serah Terima &amp; Dokumentasi Riset IoT/PLC (1 Tahun)
+                    Rangkuman &amp; Dokumentasi Riset IoT/PLC (1 Tahun)
                 </div>
                 <div class="card-subtitle">
-                    Status Lapangan, Panduan Eksekusi &amp; Handover Divisi
-                    (WHRM &rarr; WHFG)
+                    Status Lapangan &amp; Panduan Eksekusi (WHRM &rarr; WHFG)
                 </div>
             </div>
             <div class="header-right">
@@ -514,7 +513,7 @@
                             ? 'active-toggle'
                             : ''}"
                         on:click={() => (activeView = "handover")}
-                        >&amp; Action Plan</button
+                        >Status &amp; Action Plan</button
                     >
                 </div>
                 <button
